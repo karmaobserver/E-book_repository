@@ -3,6 +3,8 @@ package makso.rs.model;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import makso.rs.model.Language;
+
 @Entity
 @Table(name = "EBOOK")
 public class Ebook implements Serializable {
@@ -17,19 +19,13 @@ public class Ebook implements Serializable {
 	@Column(name = "TITLE")
 	private String title;
 
-	@Column(name = "LANGUAGE")
-	private String language;
-
-	@Column(name = "CATEGORY")
-	private String category;
-
 	@Column(name = "AUTHOR")
 	private String author;
 
 	@Column(name = "KEYWORDS")
 	private String keywords;
 	
-	@Column(name = "PUBLICATION_YEAR")
+	@Column(name = "PUBLICATION_YEAR")	
 	private Integer publicationYear;
 	
 	@Column(name = "FILE_NAME")
@@ -37,5 +33,126 @@ public class Ebook implements Serializable {
 	
 	@Column(name = "MIME")
 	private String mime;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "LANGUAGE")
+	private Language language;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "USERS")
+	private User users;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "CATEGORY")
+	private Category category;
+
+	
+	public Ebook(Long id, String title, String author, String keywords, Integer publicationYear, String fileName,
+			String mime, Language language, User users, Category category) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.author = author;
+		this.keywords = keywords;
+		this.publicationYear = publicationYear;
+		this.fileName = fileName;
+		this.mime = mime;
+		this.language = language;
+		this.users = users;
+		this.category = category;
+	}
+
+	public Ebook() {
+		super();
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(String author) {
+		this.author = author;
+	}
+
+	public String getKeywords() {
+		return keywords;
+	}
+
+	public void setKeywords(String keywords) {
+		this.keywords = keywords;
+	}
+	
+
+	public Integer getPublicationYear() {
+		return publicationYear;
+	}
+
+	public void setPublicationYear(Integer publicationYear) {
+		this.publicationYear = publicationYear;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	public String getMime() {
+		return mime;
+	}
+
+	public void setMime(String mime) {
+		this.mime = mime;
+	}
+
+	public Language getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(Language language) {
+		this.language = language;
+	}
+
+	public User getUsers() {
+		return users;
+	}
+
+	public void setUsers(User users) {
+		this.users = users;
+	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	
+	
+	
+	
 	
 }

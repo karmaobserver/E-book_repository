@@ -1,6 +1,8 @@
 package makso.rs.model;
 
 import java.io.Serializable;
+import java.util.List;
+
 import javax.persistence.*;
 
 @Entity
@@ -28,8 +30,16 @@ public class User implements Serializable {
 
 	@Column(name = "TYPE")
 	private String type;
+	
+	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
+	private List<Ebook> ebooks;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "CATEGORY")
+	private Category category;
 
-	public User(Long id, String firstName, String lastName, String username, String password, String type) {
+	public User(Long id, String firstName, String lastName, String username, String password, String type,
+			List<Ebook> ebooks, Category category) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
@@ -37,6 +47,8 @@ public class User implements Serializable {
 		this.username = username;
 		this.password = password;
 		this.type = type;
+		this.ebooks = ebooks;
+		this.category = category;
 	}
 
 	public User() {
@@ -94,5 +106,22 @@ public class User implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+
+	public List<Ebook> getEbooks() {
+		return ebooks;
+	}
+
+	public void setEbooks(List<Ebook> ebooks) {
+		this.ebooks = ebooks;
+	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+	
 	
 }
