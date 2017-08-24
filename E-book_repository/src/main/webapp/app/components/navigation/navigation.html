@@ -32,8 +32,8 @@
       <!-- Ako bude potrebe da se uradi preko buttona -->
       <ul class="nav navbar-nav navbar-right">
         <li><a href="" >{{vm.firstName}}&nbsp{{vm.lastName}}</a></li>
-        <li><button class="btn btn-success navbar-btn margin10" ng-click="vm.login()">Log in</button></li>
-        <li><button class="btn btn-danger navbar-btn" ng-click="vm.logout()">Log out</button></li>
+        <li ng-if="vm.username == NULL"><button class="btn btn-success navbar-btn margin10" ng-click="vm.login()">Log in</button></li>
+        <li ng-if="vm.username != NULL"><button class="btn btn-danger navbar-btn" ng-click="vm.logout()">Log out</button></li>
       </ul>
     </div>
   </div>

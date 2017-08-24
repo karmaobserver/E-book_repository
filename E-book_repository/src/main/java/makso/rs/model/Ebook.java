@@ -30,7 +30,7 @@ public class Ebook implements Serializable {
 	@Column(name = "PUBLICATION_YEAR")	
 	private Integer publicationYear;
 	
-	@Column(name = "FILE_NAME")
+	@Column(name = "FILE_NAME", unique = true)
 	private String fileName;
 	
 	@Column(name = "MIME")

@@ -9,7 +9,9 @@
 	function HomeCtrl($scope, $rootScope, HomeService, localStorageService) {
 		var vm = this;
 
-		vm.userType = "administrator"
+		vm.userType = "administrator";
+		vm.username = localStorageService.get("username");
+		
 		 	
 	}
 })();

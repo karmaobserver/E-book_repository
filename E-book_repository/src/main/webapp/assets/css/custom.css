@@ -71,6 +71,10 @@ p {
     color: white;
 }
 
+.margin5-button {
+    margin-right: 5px;
+}
+
 label {
     /*color: #d9d9d9;*/
     color: #ffd9b3;
@@ -96,4 +100,5 @@ td {
     min-width: 12%; 
     width: 12%
 }
+
 

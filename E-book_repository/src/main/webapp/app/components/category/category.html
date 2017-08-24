@@ -13,7 +13,7 @@
 			<tr ng-repeat="category in vm.categories">
 			    <td>{{category.name}}</td>
 			    <td  class="td-buttons" align="center">
-			    	<button style="margin-right: 5px;" type="button" class="btn btn-warning" ng-click="vm.edit(task.id)">Edit</button>
+			    	<button type="button" class="btn btn-warning margin5-button" ng-click="vm.edit(task.id)">Edit</button>
 			    	<button type="button" class="btn btn-danger" ng-click="vm.deleteProcessInstace(task.processInstanceId)">Remove</button>
 			    </td>
 			</tr>

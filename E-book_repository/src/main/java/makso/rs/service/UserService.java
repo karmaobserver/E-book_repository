@@ -29,5 +29,15 @@ public class UserService implements GenericService<User>{
 	public User findById(long id) {
 		return userRepository.findOne(id);
 	}
+	
+	public User findUserByUsername(String username) {
+		User user = new User();
+		user = userRepository.findUserByUsername(username);
+		return user;
+	}
+	
+	public User passwordExist(String password) {
+		return userRepository.passwordExist(password);
+	}
 
 }

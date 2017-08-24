@@ -5,26 +5,41 @@
 		.module('ebookApp')
 		.controller('LoginCtrl', LoginCtrl);
 
-	LoginCtrl.$inject = ['$scope', '$rootScope', 'LoginService', 'localStorageService', '$state' ];
-	function LoginCtrl($scope, $rootScope, LoginService, localStorageService, $state) {
+	LoginCtrl.$inject = ['$scope', '$rootScope', 'LoginService', 'localStorageService', '$state', 'UserService' ];
+	function LoginCtrl($scope, $rootScope, LoginService, localStorageService, $state, UserService) {
 		var vm = this;
-
-		/*vm.username = "";
-		vm.password = "";*/
 
         vm.login = function() {
 
-           /* var encodedToken = LoginService.encodeUser(vm.username, vm.password);
+        	localStorageService.set("username", vm.username);
+        	localStorageService.set("password", vm.password);
 
-
-            LoginService.login(encodedToken, vm.username).then(function(response) {
-            	localStorageService.set("encodedToken", encodedToken);
-	            localStorageService.set("username", vm.username);
-	            localStorageService.set("password", vm.password);
-	            localStorageService.set("firstName", response.data.data[0].firstName);
-	            localStorageService.set("lastName", response.data.data[0].lastName);
-            	$state.go('home');
-            });         */
+			vm.errors = [];
+			vm.hasLoginError = false;
+			vm.closeAlert = function (index) {
+			    vm.errors.splice(index, 1);
+			}
+			
+        	var credentials = {};
+       		credentials = {username: vm.username, password: vm.password};
+  
+       		UserService.login(credentials).then(function(response) {
+       			if (response.status == 404) {
+       				vm.hasLoginError = true;
+       				vm.errors.push("Username does not exists!");
+       			} else if (response.status == 409) {
+       				vm.hasLoginError = true;
+       				vm.errors.push("Passwords do not match!");
+       			} else {
+       				localStorageService.set("username", response.data.username);
+       				localStorageService.set("userType", response.data.userType);
+       				localStorageService.set("firstName", response.data.firstName);
+       				localStorageService.set("lastName", response.data.lastName);
+       				localStorageService.set("password", response.data.password);
+       				localStorageService.set("userCategory", response.data.category.name);
+       				$state.go('home');
+       			}
+       		});    	
         }
 
 	}

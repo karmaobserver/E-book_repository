@@ -1,7 +1,8 @@
+<br><br><br><br>
 <div class="container">
-<h2 align="center">Welcome to PHD online system</h2>
+<h2 align="center">Login to E-book Makso repository</h2>
 
-<br><br><br>
+<br><br>
 <form role="form"  ng-submit="vm.login()">
 	<div class="row">
 		<div class="col-xs-4 col-xs-offset-4">
@@ -19,14 +20,22 @@
 			</div>
 		</div>
 	</div>
+
+	<div ng-show="vm.hasLoginError" class="row">
+		<div class="col-xs-4 col-xs-offset-4">
+			<div uib-alert ng-class="'alert-danger'" ng-repeat="error in vm.errors track by $index"  close="vm.closeAlert($index)"> {{error}}</div>
+		</div>
+	</div>
+
 	<div class="row">
 		<div class="col-xs-4 col-xs-offset-4">
 			<div class="form-group">
 				<button type="submit" class="btn btn-success">Login!</button>
-				<p><br>You don't have account? <a ui-sref="register">Register now</a></p>
+				<!-- <p><br>You don't have account? <a ui-sref="register">Register now</a></p> -->
 			</div>
 		</div>
 	</div>
+
 	
 </form>
 

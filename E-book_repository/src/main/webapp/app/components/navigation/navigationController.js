@@ -12,13 +12,19 @@
 		vm.username = localStorageService.get("username");
 		vm.firstName = localStorageService.get("firstName");
 		vm.lastName = localStorageService.get("lastName");
-		vm.encodedToken = localStorageService.get("encodedToken");
-		vm.groups = "";
-		vm.doktorant =false;
+
 		
 		vm.logout = function() {
+			console.log("LOGOUT");
 		 	localStorageService.clearAll();
-		 	$state.go('home');           
+		 	
+		 	if ($state.is('home')) {
+		 		$state.reload();
+		 	} else {
+		 		$state.go('home'); 
+		 	}
+		 	
+		 	         
         }
 
         vm.login = function() {
