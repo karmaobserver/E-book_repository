@@ -1,0 +1,33 @@
+<div class="container">
+<h2 align="center">Welcome to PHD online system</h2>
+
+<br><br><br>
+<form role="form"  ng-submit="vm.login()">
+	<div class="row">
+		<div class="col-xs-4 col-xs-offset-4">
+			<div class="form-group">
+				<label>Username</label>
+				<input type="text" class="form-control" name="username" placeholder="Enter your username" ng-model="vm.username">
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-4 col-xs-offset-4">
+			<div class="form-group">
+				<label>Password</label>
+				<input type="password" class="form-control" name="password" placeholder="Enter your password" ng-model="vm.password">
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-4 col-xs-offset-4">
+			<div class="form-group">
+				<button type="submit" class="btn btn-success">Login!</button>
+				<p><br>You don't have account? <a ui-sref="register">Register now</a></p>
+			</div>
+		</div>
+	</div>
+	
+</form>
+
+</div>

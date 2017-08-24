@@ -1,0 +1,34 @@
+<p class="adit-text">These are all eBooks</p>
+<br>
+
+<div class="table-responsive">
+	<table class="table table-hover table-bordered">
+		<thead class="thead-inverse">
+		    <tr>
+		        <th>Title</th>
+		        <th>Author</th>
+		        <th>Keywords</th>
+		        <th>Publication Year</th>
+		        <th>Category</th>
+		        <th>Language</th>
+		        <th>User added</th>
+		        <th>Options</th>   
+		    </tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="ebook in vm.ebooks">
+			    <td>{{ebook.title}}</td>
+			    <td>{{ebook.author}}</td>
+			    <td>{{ebook.keywords}}</td>
+			    <td>{{ebook.publicationYear}}</td>
+			    <td>{{ebook.category.name}}</td>
+			    <td>{{ebook.language.name}}</td>
+			    <td>{{ebook.users.username}}</td>
+			    <td  class="td-buttons" align="center">
+			    	<button style="margin-right: 5px;" type="button" class="btn btn-warning" ng-click="vm.edit(task.id)">Edit</button>
+			    	<button type="button" class="btn btn-danger" ng-click="vm.deleteProcessInstace(task.processInstanceId)">Remove</button>
+			    </td>
+			</tr>
+		</tbody>
+	</table>
+</div>

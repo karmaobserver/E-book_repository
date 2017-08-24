@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "CATEGORY")
 public class Category implements Serializable {
@@ -20,9 +22,11 @@ public class Category implements Serializable {
 	private String name;
 	
 	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+	@JsonBackReference
 	private List<Ebook> ebooks;
 	
 	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+	@JsonBackReference
 	private List<User> users;
 
 	public long getId() {

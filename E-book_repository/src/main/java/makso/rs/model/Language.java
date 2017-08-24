@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import makso.rs.model.Ebook;
 
 @Entity
@@ -28,6 +30,7 @@ public class Language implements Serializable {
 	private String name;
 	
 	@OneToMany(mappedBy = "language", cascade = CascadeType.ALL)
+	@JsonBackReference
 	private List<Ebook> ebooks;
 
 

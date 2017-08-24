@@ -1,0 +1,77 @@
+
+<html>
+<head>
+    <title>E-book Repository</title>
+    
+     <meta charset="utf-8"> 
+<base href="/">
+
+     <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.min.css" />
+     <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha/css/bootstrap.min.css"> -->
+
+     
+     <link rel="stylesheet" href="./assets/css/custom.css" />  
+     <!-- <link rel="stylesheet" href="./assets/css/all.min.css" />  -->
+
+    
+
+    <!-- <script src="./dist/vendor.min.js"></script>    
+    <script src="./dist/all.min.js"></script> -->
+    
+    <script src="./bower_components/jquery/dist/jquery.js"></script>
+    <script src="./bower_components/angular/angular.js"></script> 
+    <script src="./bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="./bower_components/angular-ui-router/release/angular-ui-router.js"></script> 
+
+    <script src="./bower_components/tether/dist/js/tether.js"></script> 
+    <script src="./bower_components/bootstrap/dist/js/bootstrap.js"></script> 
+  
+    <script src="./bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
+
+    <script src="./bower_components/angular-base64/angular-base64.js"></script>
+
+    <script src="./bower_components/angular-file-upload/dist/angular-file-upload.js"></script> 
+   
+       
+    <script src="./app/appModule.js"></script>
+    <script src="./app/appConfig.js"></script>
+   
+    <!-- Controllers -->
+    <script src="./app/components/login/loginController.js"></script>
+    <script src="./app/components/navigation/navigationController.js"></script>
+    <script src="./app/components/home/homeController.js"></script>
+    <script src="./app/components/user/userController.js"></script>
+    <script src="./app/components/ebook/ebookController.js"></script>
+    <script src="./app/components/category/categoryController.js"></script>
+
+    <!-- Services -->
+    <script src="./app/components/login/loginService.js"></script>
+    <script src="./app/components/home/homeService.js"></script>
+    <script src="./app/components/user/userService.js"></script>
+    <script src="./app/components/ebook/ebookService.js"></script>
+    <script src="./app/components/category/categoryService.js"></script>
+    <script src="./app/shared/util/utilService.js"></script>
+
+    <!-- Directives -->
+
+</head>
+<body ng-app="ebookApp">   
+
+            <div class="navpadd" ui-view="navigation">
+              
+            </div>
+
+
+ <!--    <div class="col-xs-10 col-xs-offset-1">    
+        <div id="form-container"> -->
+ 
+            <div class="content" ui-view="content">
+                
+            </div> 
+
+           
+     <!--    </div>
+    </div> -->
+
+</body>
+</html>

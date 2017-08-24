@@ -5,6 +5,9 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "USERS")
 public class User implements Serializable {
@@ -28,17 +31,19 @@ public class User implements Serializable {
 	@Column(name = "PASSWORD")
 	private String password;
 
-	@Column(name = "TYPE")
-	private String type;
+	@Column(name = "USER_TYPE")
+	private String userType;
 	
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
+	@JsonBackReference
 	private List<Ebook> ebooks;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "CATEGORY")
+	@JsonManagedReference
 	private Category category;
 
-	public User(Long id, String firstName, String lastName, String username, String password, String type,
+	public User(Long id, String firstName, String lastName, String username, String password, String userType,
 			List<Ebook> ebooks, Category category) {
 		super();
 		this.id = id;
@@ -46,7 +51,7 @@ public class User implements Serializable {
 		this.lastName = lastName;
 		this.username = username;
 		this.password = password;
-		this.type = type;
+		this.userType = userType;
 		this.ebooks = ebooks;
 		this.category = category;
 	}
@@ -95,16 +100,12 @@ public class User implements Serializable {
 		this.password = password;
 	}
 
-	public String getType() {
-		return type;
+	public String getUserType() {
+		return userType;
 	}
 
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	public void setUserType(String userType) {
+		this.userType = userType;
 	}
 
 	public List<Ebook> getEbooks() {
@@ -122,6 +123,12 @@ public class User implements Serializable {
 	public void setCategory(Category category) {
 		this.category = category;
 	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	
 	
 	
 }

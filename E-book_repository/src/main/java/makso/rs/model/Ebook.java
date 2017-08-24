@@ -3,6 +3,8 @@ package makso.rs.model;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import makso.rs.model.Language;
 
 @Entity
@@ -36,14 +38,17 @@ public class Ebook implements Serializable {
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "LANGUAGE")
+	@JsonManagedReference
 	private Language language;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "USERS")
+	@JsonManagedReference
 	private User users;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "CATEGORY")
+	@JsonManagedReference
 	private Category category;
 
 	

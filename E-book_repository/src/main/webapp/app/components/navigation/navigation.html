@@ -1,0 +1,41 @@
+
+  <!-- navbar-fixed-top ako mi zatreba -->
+  <nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarMain">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="/home"><img src="../../../assets/img/8modified.png" width="170px" ></a>
+      
+    </div>
+    <div class="collapse navbar-collapse" id="navbarMain">
+      <ul class="nav navbar-nav">      
+        <!-- <li ng-if="vm.doktorant == true"><a href="#!/newProcess" >Start process for PHD</a></li> -->
+       <!--  <li class="dropdown">
+          <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+            <span >Groups</span>
+            <span class="caret"></span>
+          </a>
+           <ul class="dropdown-menu" role="menu">
+            <li  ng-repeat="group in vm.groups"><a ng-href="#!/group?groupId={{group.id}}">{{group.name}}</a></li> 
+          </ul>
+        </li> -->
+        <li><a href="/profile">Profile</a></li>
+        <li><a href="/categories">Categories</a></li>
+        <li><a href="/ebooks">eBooks</a></li>
+        <li><a href="/users">Users</a></li>
+        <!-- <li><button class="btn btn-danger navbar-btn" ng-click="vm.deleteDeplomentById(vm.deploymentIdPHD)">Delete Deploment</button></li> -->
+      </ul>
+      <!-- Ako bude potrebe da se uradi preko buttona -->
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="" >{{vm.firstName}}&nbsp{{vm.lastName}}</a></li>
+        <li><button class="btn btn-success navbar-btn margin10" ng-click="vm.login()">Log in</button></li>
+        <li><button class="btn btn-danger navbar-btn" ng-click="vm.logout()">Log out</button></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+

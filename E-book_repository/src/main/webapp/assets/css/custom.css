@@ -1,0 +1,99 @@
+.adit-text {
+	font-size: 38px;
+	font-style: bold;
+	font-family: "Times New Roman", Georgia, Serif;
+	color: #ffd9b3;
+	text-decoration: underline;
+}
+.home-text {
+	font-size: 24px;
+	font-style: bold;
+	font-family: "Times New Roman", Georgia, Serif;
+	color: #ffd9b3;
+}
+
+.home-title-text {
+	font-size: 30px;
+	font-style: bold;
+	font-family: "Times New Roman", Georgia, Serif;
+	color: #ffd9b3;
+}
+
+
+ .dropdown-menu li a:hover{ 
+    background-color: orange;
+}
+
+
+body {
+	background-image: url(../img/1.jpg);
+    /*padding-top: 70px; */
+    /*zbog lokovanog navbar*/
+}
+
+.content {
+    max-width: 1500px;
+    margin: auto;
+ 	background: rgba(247,252,224, 0.1);
+    padding-bottom: 50px;
+    padding-left: 15px;
+    padding-right: 15px;
+
+}
+.navpadd {
+    max-width: 1500px;
+    margin: auto;
+ 	background: rgba(247,252,224, 0.2);*/
+    padding-bottom: 10px;
+  
+}
+
+.vertical-line {
+  	border-bottom: solid;
+ 	width: 100%; /* Line width */
+    background-color: white; /* Line color */
+    height: 7px; /* Override in-line if you want specific height. */
+    float: bottom; /* Causes the line to float to left of content. 
+        You can instead use position:absolute or display:inline-block
+        if this fits better with your design */ /* Causes the line to float to left of content. 
+        You can instead use position:absolute or display:inline-block
+        if this fits better with your design */
+    margin-bottom: 7px;
+    color: #ffd9b3;
+ 
+}
+
+.margin10 {
+    margin-right:15px;
+}
+
+p {
+    color: white;
+}
+
+label {
+    /*color: #d9d9d9;*/
+    color: #ffd9b3;
+}
+
+h2 {
+    color: #ffd9b3;
+}
+
+th {
+    color: #ffd9b3;
+}
+
+td {
+    color: #ffd9b3;
+}
+
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+  background-color: green;
+}
+
+.td-buttons {
+    min-width: 12%; 
+    width: 12%
+}
+
