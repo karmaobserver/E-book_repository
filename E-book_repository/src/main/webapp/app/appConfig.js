@@ -66,6 +66,21 @@
                        }
                 } 
       })
+      .state('profile', {
+        url: "/profile",
+        views: {
+                 'content': {
+                           templateUrl: 'app/components/profile/profile.html',
+                           controller: "ProfileCtrl",
+                           controllerAs: "vm"
+                       },
+                  'navigation':{
+                           templateUrl: 'app/components/navigation/navigation.html',
+                           controller: "NavigationCtrl",
+                           controllerAs: "vm"
+                       }
+                } 
+      })
       .state('users', {
         url: "/users",
         views: {

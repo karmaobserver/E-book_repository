@@ -12,6 +12,7 @@
 		vm.username = localStorageService.get("username");
 		vm.firstName = localStorageService.get("firstName");
 		vm.lastName = localStorageService.get("lastName");
+		vm.userType = localStorageService.get("userType");
 
 		
 		vm.logout = function() {

@@ -31,7 +31,8 @@
       </ul>
       <!-- Ako bude potrebe da se uradi preko buttona -->
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="" >{{vm.firstName}}&nbsp{{vm.lastName}}</a></li>
+      	<li ng-if="vm.username != NULL"><a href="" >{{vm.firstName}}&nbsp{{vm.lastName}}</a></li>
+      	<li ng-if="vm.username != NULL"><a href="" >Role: &nbsp{{vm.userType}}</a></li>
         <li ng-if="vm.username == NULL"><button class="btn btn-success navbar-btn margin10" ng-click="vm.login()">Log in</button></li>
         <li ng-if="vm.username != NULL"><button class="btn btn-danger navbar-btn" ng-click="vm.logout()">Log out</button></li>
       </ul>

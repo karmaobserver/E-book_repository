@@ -1,10 +1,10 @@
 {
-  "name": "phd-bower",
+  "name": "ebook-bower",
   "homepage": "www.google.com",
   "authors": [
     "Aleksej"
   ],
-  "description": "PHD Project",
+  "description": E-Book project",
   "main": "Index.html",
   "keywords": [
     "bower"

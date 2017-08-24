@@ -29,7 +29,30 @@
                     	console.log(error);
 						return error;
 					});	    	
-       		}
+       		},
+
+            modifyCategory: function(category) {
+                console.log(category);
+            var req = {
+                method: 'PUT',
+                url: 'api/editCategory',
+                headers: {
+                    'Content-Type': 'application/json'
+                    // 'Authorization': 'Basic ' + token
+                },
+                data: category
+            }
+            return $http(req)
+                    .then(function(result) {
+                        console.log("modificated category");
+                        console.log(result);
+                        return result;
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                        return error;
+                    });         
+            }
        
 		}		
 	}

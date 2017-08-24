@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import makso.rs.dto.CredentialsDto;
+import makso.rs.dto.UserDto;
 import makso.rs.model.User;
 import makso.rs.service.UserService;
 
@@ -52,6 +53,29 @@ public class UserController {
         
         System.out.println(userWithPassword.getUsername());
         return new ResponseEntity<User>(userWithPassword, HttpStatus.OK);
+    }
+    
+    
+    //------------------- Update a User --------------------------------------------------------
+    
+    @RequestMapping(value = "/editUser", method = RequestMethod.PUT)
+    public ResponseEntity<User> updateUser(@RequestBody UserDto userDto) {
+        System.out.println("Updating User " + userDto.getUsername());
+              
+        User currentUser = userService.findUserByUsername(userDto.getUsername());
+          
+        if (currentUser==null) {
+            System.out.println("User with username " + userDto.getUsername() + " not found");
+            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+        }
+  
+        currentUser.setFirstName(userDto.getFirstName());
+        currentUser.setLastName(userDto.getLastName());
+        currentUser.setPassword(userDto.getPassword());
+          
+  
+        userService.save(currentUser);
+        return new ResponseEntity<User>(currentUser, HttpStatus.OK);
     }
 
 }

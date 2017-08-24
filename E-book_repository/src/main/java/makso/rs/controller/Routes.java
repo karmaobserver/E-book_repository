@@ -14,6 +14,7 @@ public  class Routes {
         "/ebooks",
         "/users",
         "/login",
+        "/profile",
         
        
     })

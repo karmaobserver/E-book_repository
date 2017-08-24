@@ -52,6 +52,28 @@
                         });            
             },
 
+            modifyUser: function(user) {
+                var req = {
+                    method: 'PUT',
+                    url: 'api/editUser',
+                    headers: {
+                        'Content-Type': 'application/json'
+                        // 'Authorization': 'Basic ' + token
+                    },
+                    data: user
+                }
+                return $http(req)
+                        .then(function(result) {
+                            console.log("user updated!");
+                            console.log(result);
+                            return result;
+                        })
+                        .catch(function(error) {
+                            console.log(error);
+                            return error;
+                        });            
+            },
+
             login: function(credentials) {
                 var req = {
                     method: 'POST',
@@ -62,7 +84,6 @@
                     },
                     data: credentials
                     
-
                 }
                 return $http(req)
                         .then(function(result) {
