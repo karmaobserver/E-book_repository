@@ -51,6 +51,36 @@
                        }
                 } 
       })
+      .state('categoryAdd', {
+        url: "/categoryAdd",
+        views: {
+                 'content': {
+                           templateUrl: 'app/components/category/categoryAdd.html',
+                           controller: "CategoryCtrl",
+                           controllerAs: "vm"
+                       },
+                  'navigation':{
+                           templateUrl: 'app/components/navigation/navigation.html',
+                           controller: "NavigationCtrl",
+                           controllerAs: "vm"
+                       }
+                } 
+      })
+      .state('userAdd', {
+        url: "/userAdd",
+        views: {
+                 'content': {
+                           templateUrl: 'app/components/user/userAdd.html',
+                           controller: "UserCtrl",
+                           controllerAs: "vm"
+                       },
+                  'navigation':{
+                           templateUrl: 'app/components/navigation/navigation.html',
+                           controller: "NavigationCtrl",
+                           controllerAs: "vm"
+                       }
+                } 
+      })
       .state('ebooks', {
         url: "/ebooks",
         views: {

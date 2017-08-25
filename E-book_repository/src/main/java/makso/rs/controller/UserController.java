@@ -12,8 +12,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import makso.rs.dto.CredentialsDto;
+import makso.rs.dto.UserAdminDto;
 import makso.rs.dto.UserDto;
+import makso.rs.model.Category;
 import makso.rs.model.User;
+import makso.rs.service.CategoryService;
 import makso.rs.service.UserService;
 
 @RestController
@@ -22,6 +25,9 @@ public class UserController {
 	
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	CategoryService categoryService;
 	
 	@RequestMapping(value = "/users", method = RequestMethod.GET)
 	public ResponseEntity<List<User>> getUsers() {
@@ -76,6 +82,74 @@ public class UserController {
   
         userService.save(currentUser);
         return new ResponseEntity<User>(currentUser, HttpStatus.OK);
+    }
+    
+    
+    //-------------------Edit a Use by Admin--------------------------------------------------------
+    
+    @RequestMapping(value = "/editUserByAdmin", method = RequestMethod.PUT)
+    public ResponseEntity<User> editUserByAdmin(@RequestBody UserAdminDto userAdminDto) {
+        System.out.println("Editing User " + userAdminDto.getUsername());
+        System.out.println("Kategorija ID je:" + userAdminDto.getCategoryId());
+        
+        
+        if (userService.findUserByUsername(userAdminDto.getUsername()) != null) {
+            System.out.println("A User with name " + userAdminDto.getUsername() + " already exist");
+            return new ResponseEntity<User>(HttpStatus.CONFLICT);
+        }
+        
+        if (userAdminDto.getUsername() == null || userAdminDto.getUsername().equals("")) {
+        	 System.out.println("A User can't be null!");
+        	 return new ResponseEntity<User>(HttpStatus.NOT_ACCEPTABLE);
+        }
+        
+        User user = userService.findById(userAdminDto.getUserId());
+        
+        if (!userAdminDto.getUsername().equals("sameUsername")) {
+        	System.out.println("Username is same as old one");
+        	user.setUsername(userAdminDto.getUsername());
+        }
+       
+        user.setFirstName(userAdminDto.getFirstName());
+        user.setLastName(userAdminDto.getLastName());
+        user.setPassword(userAdminDto.getPassword());
+        user.setUserType(userAdminDto.getUserType());
+             
+        Category userCategory = categoryService.findById(userAdminDto.getCategoryId());
+      
+        user.setCategory(userCategory);
+        
+        userService.save(user);
+  
+        return new ResponseEntity<User>(user, HttpStatus.OK);
+    }
+    
+    
+    //-------------------Create a User--------------------------------------------------------
+    
+    @RequestMapping(value = "/userAdd", method = RequestMethod.POST)
+    public ResponseEntity<User> createUser(@RequestBody UserAdminDto userDto) {
+        System.out.println("Creating User " + userDto.getUsername());
+  
+        if (userService.findUserByUsername(userDto.getUsername()) != null) {
+            System.out.println("A User with name " + userDto.getUsername() + " already exist");
+            return new ResponseEntity<User>(HttpStatus.CONFLICT);
+        }
+        
+        User user = new User();
+        
+        user.setUsername(userDto.getUsername());
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+        user.setPassword(userDto.getPassword());
+        user.setUserType(userDto.getUserType());
+             
+        Category userCategory = categoryService.findById(userDto.getCategoryId());
+      
+        user.setCategory(userCategory);
+        
+        userService.save(user);
+        return new ResponseEntity<User>(user, HttpStatus.CREATED);
     }
 
 }

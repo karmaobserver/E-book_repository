@@ -74,6 +74,50 @@
                         });            
             },
 
+            modiflyUserByAdmin: function(user) {
+                var req = {
+                    method: 'PUT',
+                    url: 'api/editUserByAdmin',
+                    headers: {
+                        'Content-Type': 'application/json'
+                        // 'Authorization': 'Basic ' + token
+                    },
+                    data: user
+                }
+                return $http(req)
+                        .then(function(result) {
+                            console.log("user updated by admin!");
+                            console.log(result);
+                            return result;
+                        })
+                        .catch(function(error) {
+                            console.log(error);
+                            return error;
+                        });            
+            },
+
+            addNewUser: function(user) {
+                var req = {
+                    method: 'POST',
+                    url: 'api/userAdd',
+                    headers: {
+                        'Content-Type': 'application/json'
+                        // 'Authorization': 'Basic ' + token
+                    },
+                    data: user
+                }
+                return $http(req)
+                        .then(function(result) {
+                            console.log("Added user!");
+                            console.log(result);
+                            return result;
+                        })
+                        .catch(function(error) {
+                            console.log(error);
+                            return error;
+                        });            
+            },
+
             login: function(credentials) {
                 var req = {
                     method: 'POST',

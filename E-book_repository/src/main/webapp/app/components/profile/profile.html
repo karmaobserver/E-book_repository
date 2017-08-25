@@ -2,7 +2,7 @@
 <form id="signup-form" ng-submit="vm.modifyProfile()" name="profileForm">
 	<div ng-if="!vm.isChangingPassword">
 		 <div class="form-group row">
-		 	<div class="col-xs-6">
+		 	<div class="col-xs-4">
 	    		<p class="h3 bg-success" align="center">Personal Informations</p>
 	    	</div>
 	    </div>
@@ -18,8 +18,8 @@
 	        <div class="col-xs-2">
 	            <label>First Name:</label>
 	        </div>
-	        <div class="col-xs-10">
-	            <input  ng-if="vm.isEditing === true" type="text" ng-model="vm.firstName" ng-model-options="{ updateOn: 'submit' }">
+	        <div class="col-xs-2">
+	            <input  class="form-control" ng-if="vm.isEditing === true" type="text" ng-model="vm.firstName" ng-model-options="{ updateOn: 'submit' }">
 	            <p ng-if="vm.isEditing === false">{{vm.firstName}}</p>
 	        </div>
 	    </div>
@@ -27,8 +27,8 @@
 	        <div class="col-xs-2">
 	            <label>Last Name:</label>
 	        </div>
-	        <div class="col-xs-10">
-	            <input  ng-if="vm.isEditing === true" type="text" ng-model="vm.lastName" ng-model-options="{ updateOn: 'submit' }">
+	        <div class="col-xs-2">
+	            <input  class="form-control" ng-if="vm.isEditing === true" type="text" ng-model="vm.lastName" ng-model-options="{ updateOn: 'submit' }">
 	            <p ng-if="vm.isEditing === false">{{vm.lastName}}</p>
 	        </div>
 	    </div>
@@ -54,16 +54,16 @@
 	        <div class="col-xs-2">
 	            <label>New Password:</label>
 	        </div>
-	        <div class="col-xs-10">
-	        	<input  ng-if="vm.isChangingPassword === true" type="password" ng-model="vm.passwordNew" ng-model-options="{ updateOn: 'submit' }">
+	        <div class="col-xs-2">
+	        	<input  class="form-control" ng-if="vm.isChangingPassword === true" type="password" ng-model="vm.passwordNew" ng-model-options="{ updateOn: 'submit' }">
 	        </div>
 	    </div>
 	    <div class="form-group row">
 	        <div class="col-xs-2">
 	            <label>New Password Confirm:</label>
 	        </div>
-	        <div class="col-xs-10">
-	        	<input  ng-if="vm.isChangingPassword === true" type="password" ng-model="vm.passwordConfirm" ng-model-options="{ updateOn: 'submit' }">
+	        <div class="col-xs-2">
+	        	<input  class="form-control" ng-if="vm.isChangingPassword === true" type="password" ng-model="vm.passwordConfirm" ng-model-options="{ updateOn: 'submit' }">
 	        </div>
 	    </div>
     </div>

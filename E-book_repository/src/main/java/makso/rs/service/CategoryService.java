@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import makso.rs.model.Category;
+import makso.rs.model.User;
 import makso.rs.repository.CategoryRepository;
 @Service
 @Transactional
@@ -27,6 +28,12 @@ public class CategoryService implements GenericService<Category>{
 	@Override
 	public Category findById(long id) {
 		return categoryRepository.findOne(id);
+	}
+	
+	public Category findCategoryByName(String name) {
+		Category category = new Category();
+		category = categoryRepository.findCategoryByName(name);
+		return category;
 	}
 
 }

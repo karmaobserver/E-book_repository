@@ -21,17 +21,47 @@
 		</thead>
 		<tbody>
 			<tr ng-repeat="user in vm.users">
-			    <td>{{user.username}}</td>
-			    <td>{{user.password}}</td>
-			    <td>{{user.firstName}}</td>
-			    <td>{{user.lastName}}</td>
-			    <td>{{user.category.name}}</td>
-			    <td>{{user.userType}}</td>
+				<td ng-if="vm.isEditing === true && vm.userId == user.id"><input type="text"  class="form-control" ng-model="vm.username" ng-init="vm.username = user.username" ng-value="user.username"></td>
+			    <td ng-if="vm.isEditing === false || vm.userId != user.id">{{user.username}}</td>
+
+			    <td ng-if="vm.isEditing === true && vm.userId == user.id"><input type="text" class="form-control" ng-model="vm.userPassword" ng-init="vm.userPassword = user.password" ng-value="user.password"></td>
+			    <td ng-if="vm.isEditing === false || vm.userId != user.id">{{user.password}}</td>
+
+			    <td ng-if="vm.isEditing === true && vm.userId == user.id"><input type="text" class="form-control" ng-model="vm.userFirstName" ng-init="vm.userFirstName = user.firstName" ng-value="user.firstName"></td>
+			    <td ng-if="vm.isEditing === false || vm.userId != user.id">{{user.firstName}}</td>
+
+			    <td ng-if="vm.isEditing === true && vm.userId == user.id"><input type="text" class="form-control" ng-model="vm.userLastName" ng-init="vm.userLastName = user.lastName" ng-value="user.lastName"></td>
+			    <td ng-if="vm.isEditing === false || vm.userId != user.id">{{user.lastName}}</td>
+
+			    <td ng-if="vm.isEditing === true && vm.userId == user.id">
+			    	<select class="form-control" ng-init="vm.categorySelected = user.category.id" ng-model="vm.categorySelected" ng-options="category.id as category.name for category in vm.categories">   
+		    	 		<option ></option> 		    	
+					</select>
+				</td>
+			    <td ng-if="vm.isEditing === false || vm.userId != user.id">{{user.category.name}}</td>
+
+			    <td ng-if="vm.isEditing === true && vm.userId == user.id">
+			    	<select class="form-control" ng-init="vm.userTypeSelected = user.userType" ng-model="vm.userTypeSelected" ng-options="userType.type as userType.type for userType in vm.userTypes">   
+		    	 		<option ></option> 		    	
+					</select>
+				</td>
+			    <td ng-if="vm.isEditing === false || vm.userId != user.id">{{user.userType}}</td>
+
 			    <td  class="td-buttons" align="center">
-			    	<button type="button" class="btn btn-warning margin5-button" ng-click="vm.edit(task.id)">Edit</button>
-			    	<button type="button" class="btn btn-danger" ng-click="vm.deleteProcessInstace(task.processInstanceId)">Remove</button>
+			    	<button ng-if="vm.isEditing === false || vm.userId != user.id" type="button" class="btn btn-warning margin5-button" ng-click="vm.editUser(user.id)">Edit</button>
+			    	<button ng-if="vm.isEditing === false || vm.userId != user.id" type="button" class="btn btn-danger" ng-click="vm.deleteUser(user.id)">Remove</button>
+			    	<button ng-if="vm.isEditing === true && vm.userId == user.id" type="button" class="btn btn-success margin5-button" ng-click="vm.modiflyUserByAdmin(user.id, user.username)">Save</button>
+			    	<button ng-if="vm.isEditing === true && vm.userId == user.id" class="btn btn-danger" type="button" ng-click="vm.editUserCancel()">Cancle</button>
 			    </td>
 			</tr>
 		</tbody>
 	</table>
 </div>
+<div ng-show="vm.hasEditError" class="row">
+	<div class="col-xs-4">
+		<div uib-alert ng-class="'alert-danger'" close="vm.closeAddAlert()"> {{vm.error}}</div>
+	</div>
+</div>
+
+<button ng-if="vm.isEditing === false" type="button" class="btn btn-Success" ng-click="vm.addUser()">Add New User</button>	
+

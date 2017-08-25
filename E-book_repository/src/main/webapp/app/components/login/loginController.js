@@ -29,7 +29,7 @@
    				vm.errors.push("Username does not exists!");
    			} else if (response.status == 409) {
    				vm.hasLoginError = true;
-   				vm.errors.push("Passwords do not match!");
+   				vm.errors.push("Password and Username do not match!");
    			} else {
    				localStorageService.set("username", response.data.username);
    				localStorageService.set("userType", response.data.userType);

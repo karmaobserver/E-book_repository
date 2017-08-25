@@ -29,7 +29,29 @@
                     	console.log(error);
 						return error;
 					});	    	
-       		}
+       		},
+
+            getAllEbooksByCategory: function(categoryId) {
+            var req = {
+                method: 'POST',
+                url: 'api/ebooksByCategory',
+                headers: {
+                    'Content-Type': 'application/json'
+                    // 'Authorization': 'Basic ' + token
+                },
+                data: categoryId
+            }
+            return $http(req)
+                    .then(function(result) {
+                        console.log("getEbooks by Category");
+                        console.log(result);
+                        return result;
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                        return error;
+                    });         
+            }
        
 		}		
 	}

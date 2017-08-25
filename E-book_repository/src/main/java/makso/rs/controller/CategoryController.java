@@ -41,11 +41,43 @@ public class CategoryController {
             System.out.println("Category with Id " + categoryDto.getCategoryId() + " not found");
             return new ResponseEntity<Category>(HttpStatus.NOT_FOUND);
         }
+        
+        if (categoryService.findCategoryByName(categoryDto.getName()) != null) {
+            System.out.println("A Category with name " + categoryDto.getName() + " already exist");
+            return new ResponseEntity<Category>(HttpStatus.CONFLICT);
+        }
+        
+        if (categoryDto.getName() == null || categoryDto.getName().equals("")) {
+        	 System.out.println("A Category can't be null!");
+        	 return new ResponseEntity<Category>(HttpStatus.NOT_ACCEPTABLE);
+        }
   
         currentCategory.setName(categoryDto.getName());
         
         categoryService.save(currentCategory);
         return new ResponseEntity<Category>(currentCategory, HttpStatus.OK);
+    }
+    
+    
+    //-------------------Add a Category--------------------------------------------------------
+    
+    @RequestMapping(value = "/categoryAdd", method = RequestMethod.POST)
+    public ResponseEntity<Category> addCategory(@RequestBody String categoryName) {
+        System.out.println("Adding category " + categoryName);
+        
+        Category category = new Category();
+        
+        category.setName(categoryName);
+  
+        /*if (userService.isUserExist(user)) {
+            System.out.println("A User with name " + user.getName() + " already exist");
+            return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+        }*/
+  
+        categoryService.save(category);
+  
+       
+        return new ResponseEntity<Category>(category, HttpStatus.CREATED);
     }
 
 }

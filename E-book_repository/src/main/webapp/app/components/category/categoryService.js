@@ -31,6 +31,28 @@
 					});	    	
        		},
 
+            addNewCategory: function(categoryName) {
+            var req = {
+                method: 'POST',
+                url: 'api/categoryAdd',
+                headers: {
+                    'Content-Type': 'application/json'
+                    // 'Authorization': 'Basic ' + token
+                },
+                data: categoryName
+            }
+            return $http(req)
+                    .then(function(result) {
+                        console.log("addedCategory");
+                        console.log(result);
+                        return result;
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                        return error;
+                    });         
+            },
+
             modifyCategory: function(category) {
                 console.log(category);
             var req = {

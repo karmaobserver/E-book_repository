@@ -1,0 +1,25 @@
+<form id="categoryAdd" ng-submit="vm.addNewCategory()" name="addNewCategoryForm">
+	<div class="form-group row">
+	 	<div class="col-xs-4">
+    		<p class="h3 bg-success" align="center">Adding new category</p>
+    	</div>
+    </div>
+    <div class="form-group row">
+        <div class="col-xs-2">
+            <label>Category Name:</label>
+        </div>
+        <div class="col-xs-2">        
+            <input class="form-control" type="text" ng-model="vm.categoryNewName">
+        </div>
+    </div>
+
+    <div ng-show="vm.hasAddError" class="row">
+		<div class="col-xs-4">
+			<div uib-alert ng-class="'alert-danger'" close="vm.closeAddAlert()"> {{vm.error}}</div>
+		</div>
+	</div>
+
+	<button class="btn btn-success margin5-button" type="submit" >Add</button>
+	<button class="btn btn-danger" type="button" ng-click="vm.addNewCategoryCancel()">Cancle</button>
+	<br><br>
+</form>

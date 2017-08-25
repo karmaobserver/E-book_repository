@@ -89,7 +89,8 @@ th {
 }
 
 td {
-    color: #ffd9b3;
+    /*color: #ffd9b3;*/
+    color: red;
 }
 
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {

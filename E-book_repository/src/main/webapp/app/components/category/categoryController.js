@@ -5,11 +5,13 @@
 		.module('ebookApp')
 		.controller('CategoryCtrl', CategoryCtrl);
 
-	CategoryCtrl.$inject = ['$scope', '$rootScope', 'CategoryService', 'localStorageService' ];
-	function CategoryCtrl($scope, $rootScope, CategoryService, localStorageService) {
+	CategoryCtrl.$inject = ['$scope', '$rootScope', 'CategoryService', 'localStorageService', '$state' ];
+	function CategoryCtrl($scope, $rootScope, CategoryService, localStorageService, $state) {
 		var vm = this;
 
 		vm.isEditing = false;
+
+		vm.hasAddError = false;
 
 		CategoryService.getAllCategories().then(function(response) {
         	console.log(response.data);
@@ -24,35 +26,72 @@
 
 		vm.editCategoryCancel = function() {
 			vm.isEditing = false;
-			/*vm.hasError = false;
-			vm.errors = [];	*/	
 		};  
 
 
-		vm.modiflyCategory = function(categoryId, categoryName) {
+		vm.modiflyCategory = function(categoryId, categoryNameOld) {
 			vm.isEditing = false;
-			console.log("CATEGORIJA JE");
-			console.log(vm.categoryName);
-			console.log(categoryName);
-			var category = {};
-		   	category = {name: vm.categoryName, categoryId: categoryId};
 
-			CategoryService.modifyCategory(category)
+			if (!(vm.categoryName === categoryNameOld)) {	//ako je isti naziv kategorije kao i stari preskoci sve
+				console.log("CATEGORIJA JE");
+				console.log(vm.categoryName);
+				var category = {};
+			   	category = {name: vm.categoryName, categoryId: categoryId};
+
+				CategoryService.modifyCategory(category)
+							.then(function(response) {
+								console.log('Modificated category');
+								console.log(response.data);
+								if (response.status == 409) {
+						   				vm.hasEditError = true;
+						   				vm.error = "Category with that name already exists!";
+						   			} else if (response.status == 406) {
+						   				vm.hasEditError = true;
+						   				vm.error = "Category can not be empty and need to be unique!";
+						   			} else {
+										CategoryService.getAllCategories().then(function(response) {
+								        	console.log(response.data);
+								        	vm.categories = response.data;
+								        });
+									}			
+							})
+							.catch(function (response) {
+								console.log('dOSLO DO CATCH');
+							});
+			}
+		} 
+
+		vm.addCategory = function() {
+			$state.go('categoryAdd');
+		}
+		vm.addNewCategoryCancel = function() {
+			$state.go('categories');
+		}
+
+		vm.addNewCategory = function() {
+
+			if (!vm.categoryNewName) {	//if string is empty
+				console.log("prazno ime");
+				vm.hasAddError = true;
+				vm.error = "Category need to have name!";
+			} else {
+				CategoryService.addNewCategory(vm.categoryNewName)
 						.then(function(response) {
-							console.log('Modificated category');
+							console.log('Added new category');
 							console.log(response.data);
-							CategoryService.getAllCategories().then(function(response) {
-					        	console.log(response.data);
-					        	vm.categories = response.data;
-					        });
-							
-							
+							$state.go('categories');
 						})
 						.catch(function (response) {
 							console.log('dOSLO DO CATCH');
-							$rootScope.error = response.data.msg;
 						});
-		}       
+
+			}
+			
+		}
+
+		vm.closeAddAlert = function() {
+			vm.hasAddError = false;
+		}    
 		 	
 	}
 })();

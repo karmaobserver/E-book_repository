@@ -15,15 +15,26 @@
 		</thead>
 		<tbody>
 			<tr ng-repeat="category in vm.categories">
-				<td ng-if="vm.isEditing === true && vm.categoryId == category.id"><input type="text" ng-model="vm.categoryName"   ng-value="category.name"></td>
+				<td ng-if="vm.isEditing === true && vm.categoryId == category.id"><input class="form-control" type="text" ng-model="vm.categoryName"  ng-init="vm.categoryName = category.name" ng-value="category.name"></td>
 			    <td ng-if="vm.isEditing === false || vm.categoryId != category.id">{{category.name}}</td>
 			    <td  class="td-buttons" align="center">
 			    	<button ng-if="vm.isEditing === false || vm.categoryId != category.id" type="button" class="btn btn-warning margin5-button" ng-click="vm.editCategory(category.id)">Edit</button>
 			    	<button ng-if="vm.isEditing === false || vm.categoryId != category.id" type="button" class="btn btn-danger" ng-click="vm.deleteCategory(category.id)">Remove</button>
-			    	<button ng-if="vm.isEditing === true && vm.categoryId == category.id" type="button" class="btn btn-success margin5-button" ng-click="vm.modiflyCategory(category.id, vm.categoryName)">Save</button>
+			    	<button ng-if="vm.isEditing === true && vm.categoryId == category.id" type="button" class="btn btn-success margin5-button" ng-click="vm.modiflyCategory(category.id, category.name)">Save</button>
 			    	<button ng-if="vm.isEditing === true && vm.categoryId == category.id" class="btn btn-danger" type="button" ng-click="vm.editCategoryCancel()">Cancle</button>
 			    </td>
 			</tr>
+			<!-- <tr>
+		        <td><button ng-if="vm.isEditing === false" type="button" class="btn btn-Success" ng-click="vm.addCategory()">Add New Category</button></td>		
+		    </tr> -->
 		</tbody>
 	</table>
 </div>
+
+<div ng-show="vm.hasEditError" class="row">
+	<div class="col-xs-4">
+		<div uib-alert ng-class="'alert-danger'" close="vm.closeAddAlert()"> {{vm.error}}</div>
+	</div>
+</div>
+
+<button ng-if="vm.isEditing === false" type="button" class="btn btn-Success" ng-click="vm.addCategory()">Add New Category</button>		
