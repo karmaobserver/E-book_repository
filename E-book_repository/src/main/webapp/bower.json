@@ -4,7 +4,7 @@
   "authors": [
     "Aleksej"
   ],
-  "description": E-Book project",
+  "description": "E-Book project",
   "main": "Index.html",
   "keywords": [
     "bower"
@@ -24,7 +24,8 @@
     "angular-bootstrap": "^2.3.0",
     "angular-local-storage": "^0.5.2",
     "angular-base64": "^2.0.5",
-    "angular-file-upload": "^2.5.0"
+    "angular-file-upload": "^2.5.0",
+    "angular-spinner": "^1.0.1"
   },
   "devDependencies": {}
 }

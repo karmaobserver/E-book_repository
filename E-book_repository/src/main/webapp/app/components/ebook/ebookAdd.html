@@ -1,0 +1,100 @@
+<form id="ebookAdd" ng-submit="vm.addNewEbook()" name="addNewEbookForm">
+	<div class="form-group row">
+	 	<div class="col-xs-10">
+    		<p class="h3 bg-success" align="center">Adding new ebook</p>
+    	</div>
+    </div>
+    <!-- <span us-spinner="{radius:30, width:8, length: 16, color:'GREEN'}" spinner-on="vm.showUploadSpinner" style="position: relative"></span> -->
+    <div class="form-group row" us-spinner="{radius:30, width:8, length: 16, color:'#f4a142'}" spinner-on="vm.showUploadSpinner" style="position: relative">
+         <div class="col-xs-2">
+            <label for="file">File:</label>
+        </div>
+        <div class="col-xs-4">
+            <input class="form-control" ng-model-options="{updateOn: 'default blur', debounce: { 'default': 0, 'blur': 0}}" type="file" ng-model="vm.file" onchange="angular.element(this).scope().vm.upload(this.files)" id="file" name="file" placeholder="File"/>
+        </div> 
+    </div>
+
+    <div ng-show="vm.file !== null && vm.showUploadSpinner === false">
+        <div class="form-group row">
+            <div class="col-xs-2">
+                <label>Title:</label>
+            </div>
+            <div class="col-xs-4">        
+                <input class="form-control" type="text" ng-model="vm.ebook.title">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-xs-2">
+                <label>Author:</label>
+            </div>
+            <div class="col-xs-4">        
+                <input class="form-control" type="text" ng-model="vm.ebook.author">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-xs-2">
+                <label>Keywords:</label>
+            </div>
+            <div class="col-xs-8">        
+                <input class="form-control" type="text" ng-model="vm.ebook.keywords">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-xs-2">
+                <label>Publication Year:</label>
+            </div>
+            <div class="col-xs-1">        
+                <input class="form-control" type="number" ng-model="vm.ebook.publicationYear">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-xs-2">
+                <label>Category:</label>
+            </div>
+            <div class="col-xs-2">        
+                <select class="form-control" ng-model="vm.ebook.category" ng-options="category.id as category.name for category in vm.categories track by category.id">   
+                    <option value="">--Select Category--</option>              
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-xs-2">
+                <label>Language:</label>
+            </div>
+            <div class="col-xs-2">        
+                <select class="form-control" ng-model="vm.ebook.language" ng-options="language.id as language.name for language in vm.languages track by language.id">
+                    <option value="">--Select Language--</option>              
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-xs-2">
+                <label>File Name:</label>
+            </div>
+            <div class="col-xs-4">        
+            <!-- ng-readonly="true" -->
+                <input  class="form-control" type="text" ng-model="vm.ebook.fileName"> 
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-xs-2">
+                <label>MIME:</label>
+            </div>
+            <div class="col-xs-2">        
+                <input class="form-control" type="text" ng-model="vm.ebook.mime">
+            </div>
+        </div>
+
+
+        <div ng-show="vm.hasAddError" class="row">
+    		<div class="col-xs-4">
+    			<div uib-alert ng-class="'alert-danger'" close="vm.closeAddAlert()"> {{vm.error}}</div>
+    		</div>
+    	</div>
+
+    	<button class="btn btn-success margin5-button" type="submit" >Add</button>
+    	<button class="btn btn-danger" type="button" ng-click="vm.addNewEbookCancel()">Cancle</button>
+    	<br><br>
+     </div>
+</form>
+

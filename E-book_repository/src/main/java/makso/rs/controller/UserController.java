@@ -151,5 +151,22 @@ public class UserController {
         userService.save(user);
         return new ResponseEntity<User>(user, HttpStatus.CREATED);
     }
+    
+    
+    //------------------- Delete a User --------------------------------------------------------
+    
+    @RequestMapping(value = "/deleteUser", method = RequestMethod.DELETE)
+    public ResponseEntity<User> deleteUser(@RequestBody long userId) {
+        System.out.println("Deleting User with id " + userId);
+  
+        User user = userService.findById(userId);
+        if (user == null) {
+            System.out.println("Unable to delete. User with id " + userId + " not found");
+            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+        }
+  
+        userService.deleteById(userId);
+        return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
+    }
 
 }

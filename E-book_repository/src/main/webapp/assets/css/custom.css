@@ -1,3 +1,9 @@
+.center {
+    display: block;
+    text-align: center;
+    text-decoration: underline;
+}
+
 .adit-text {
 	font-size: 38px;
 	font-style: bold;
@@ -26,7 +32,10 @@
 
 
 body {
-	background-image: url(../img/1.jpg);
+	background-image: url(../img/old.jpg);
+    background-size:     cover;                     
+    background-repeat:   no-repeat;
+    background-position: center center; 
     /*padding-top: 70px; */
     /*zbog lokovanog navbar*/
 }
@@ -34,7 +43,9 @@ body {
 .content {
     max-width: 1500px;
     margin: auto;
- 	background: rgba(247,252,224, 0.1);
+ 	background: rgba(60,60,93, 0.9);
+   /* background: rgba(102,102,153, 0.9);*/
+    /*background: rgba(247,252,224, 0.8);*/
     padding-bottom: 50px;
     padding-left: 15px;
     padding-right: 15px;
@@ -43,9 +54,8 @@ body {
 .navpadd {
     max-width: 1500px;
     margin: auto;
- 	background: rgba(247,252,224, 0.2);*/
+ 	background: rgba(247,252,224, 0.2);
     padding-bottom: 10px;
-  
 }
 
 .vertical-line {
@@ -84,17 +94,22 @@ h2 {
     color: #ffd9b3;
 }
 
+.h3 {
+    color: #ffd9b3;
+    background: #436648;
+}
+
 th {
     color: #ffd9b3;
 }
 
 td {
     /*color: #ffd9b3;*/
-    color: red;
+    color: #ffd9b3;
 }
 
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
-  background-color: green;
+  background-color: #436648;
 }
 
 .td-buttons {
@@ -108,6 +123,10 @@ p {
 
 label {
     font-size: 18px;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+  color: #ffd9b3;
 }
 
 

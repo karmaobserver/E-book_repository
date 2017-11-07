@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import makso.rs.model.Category;
 import makso.rs.model.Ebook;
+import makso.rs.model.User;
 import makso.rs.repository.EbookRepository;
 
 @Service
@@ -37,6 +38,18 @@ public class EbookService implements GenericService<Ebook>{
 		ArrayList<Ebook> ebookList = new ArrayList<Ebook>();
 		ebookList = (ArrayList<Ebook>) ebookRepository.getEbooksByCategory(categoryId);
 		return ebookList;
+	}
+	
+	public Ebook findEbookByFileName(String fileName) {
+		Ebook ebook = new Ebook();
+		ebook = ebookRepository.findEbookByFileName(fileName);
+		return ebook;
+	}
+
+	@Override
+	public void deleteById(long id) {
+		ebookRepository.delete(id);
+		
 	}
 
 }

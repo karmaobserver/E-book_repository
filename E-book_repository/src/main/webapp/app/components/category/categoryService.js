@@ -53,6 +53,28 @@
                     });         
             },
 
+            removeCategory: function(categoryId) {
+            var req = {
+                method: 'DELETE',
+                url: 'api/deleteCategory',
+                headers: {
+                    'Content-Type': 'application/json'
+                    // 'Authorization': 'Basic ' + token
+                },
+                data: categoryId
+            }
+            return $http(req)
+                    .then(function(result) {
+                        console.log("deletedCategory");
+                        console.log(result);
+                        return result;
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                        return error;
+                    });         
+            },
+
             modifyCategory: function(category) {
                 console.log(category);
             var req = {

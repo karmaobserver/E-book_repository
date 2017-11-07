@@ -37,6 +37,7 @@
    				localStorageService.set("lastName", response.data.lastName);
    				localStorageService.set("password", response.data.password);
    				localStorageService.set("userCategory", response.data.category.name);
+          localStorageService.set("userId", response.data.id);
    				$state.go('home');
    			}
    		});    	

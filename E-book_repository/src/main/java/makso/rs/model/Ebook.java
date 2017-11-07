@@ -50,6 +50,8 @@ public class Ebook implements Serializable {
 	@JoinColumn(name = "CATEGORY")
 	@JsonManagedReference
 	private Category category;
+	
+	private String highlight;
 
 	
 	public Ebook(Long id, String title, String author, String keywords, Integer publicationYear, String fileName,
@@ -65,6 +67,14 @@ public class Ebook implements Serializable {
 		this.language = language;
 		this.users = users;
 		this.category = category;
+	}
+
+	public String getHighlight() {
+		return highlight;
+	}
+
+	public void setHighlight(String highlight) {
+		this.highlight = highlight;
 	}
 
 	public Ebook() {
@@ -155,9 +165,5 @@ public class Ebook implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	
-	
-	
-	
 	
 }

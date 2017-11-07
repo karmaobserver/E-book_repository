@@ -73,7 +73,7 @@
 									UserService.getAllUsers().then(function(response) {
 							        	console.log(response.data);
 							        	vm.users = response.data;
-					      			 });
+					      			});
 								}
 							
 							
@@ -81,7 +81,22 @@
 						.catch(function (response) {
 							console.log('dOSLO DO CATCH');
 						});
-		} 
+		}
+
+		vm.deleteUser = function(userId) {
+			UserService.removeUser(userId)
+						.then(function(response) {
+							console.log('Deleted user');
+							UserService.getAllUsers().then(function(response) {
+					        	console.log(response.data);
+					        	vm.users = response.data;
+			      			});
+
+						})
+						.catch(function(response) {
+							console.log('dOSLO DO CATCH');
+						});
+		}
 
 		vm.addUser = function() {
 			$state.go('userAdd');

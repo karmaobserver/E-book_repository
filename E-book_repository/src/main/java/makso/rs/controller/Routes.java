@@ -15,9 +15,16 @@ public  class Routes {
         "/users",
         "/login",
         "/profile",
+        "/profile/passwordChange",
         "/categoryAdd",
         "/userAdd",
         "/ebooksByCategory",
+        "/ebooksSearch",
+        "/ebookEdit",
+        "/languages",
+        "/ebookAdd",
+        "/ebookSearch",
+        
         
        
     })

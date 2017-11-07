@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import makso.rs.model.Category;
 import makso.rs.model.Language;
 import makso.rs.repository.LanguageRepository;
 
@@ -28,6 +29,17 @@ public class LanguageService implements GenericService<Language>{
 	@Override
 	public Language findById(long id) {
 		return languageRepository.findOne(id);
+	}
+
+	@Override
+	public void deleteById(long id) {
+		languageRepository.delete(id);	
+	}
+	
+	public Language findLanguageByName(String name) {
+		Language language = new Language();
+		language = languageRepository.findLanguageByName(name);
+		return language;
 	}
 
 }

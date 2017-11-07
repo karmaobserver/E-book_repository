@@ -40,4 +40,10 @@ public class UserService implements GenericService<User>{
 		return userRepository.passwordExist(password);
 	}
 
+	@Override
+	public void deleteById(long id) {
+		userRepository.delete(id);
+		
+	}
+
 }

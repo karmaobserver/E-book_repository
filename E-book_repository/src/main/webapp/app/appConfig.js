@@ -36,6 +36,21 @@
                        }
                 } 
       })
+      .state('ebookSearch', {
+        url: "/ebookSearch",
+        views: {
+                 'content': {
+                           templateUrl: 'app/components/search/search.html',
+                           controller: "SearchCtrl",
+                           controllerAs: "vm"
+                       },
+                  'navigation':{
+                           templateUrl: 'app/components/navigation/navigation.html',
+                           controller: "NavigationCtrl",
+                           controllerAs: "vm"
+                       }
+                }
+      })
       .state('categories', {
         url: "/categories",
         views: {
@@ -96,6 +111,21 @@
                        }
                 } 
       })
+      .state('ebookAdd', {
+        url: "/ebookAdd",
+        views: {
+                 'content': {
+                           templateUrl: 'app/components/ebook/ebookAdd.html',
+                           controller: "EbookCtrl",
+                           controllerAs: "vm"
+                       },
+                  'navigation':{
+                           templateUrl: 'app/components/navigation/navigation.html',
+                           controller: "NavigationCtrl",
+                           controllerAs: "vm"
+                       }
+                } 
+      })
       .state('profile', {
         url: "/profile",
         views: {
@@ -109,7 +139,22 @@
                            controller: "NavigationCtrl",
                            controllerAs: "vm"
                        }
-                } 
+                }
+      })
+      .state('passwordChange', {
+            url: "/profile/passwordChange",
+            views: {
+                 'content': {
+                           templateUrl: 'app/components/profile/profilePasswordChange.html',
+                           controller: "ProfileCtrl",
+                           controllerAs: "vm"
+                       },
+                  'navigation':{
+                           templateUrl: 'app/components/navigation/navigation.html',
+                           controller: "NavigationCtrl",
+                           controllerAs: "vm"
+                       }
+                }
       })
       .state('users', {
         url: "/users",

@@ -10,11 +10,26 @@
 
 		return {
         
-	        encodeUser: function(username,password){
-	    		var decodedToken = username + ":" + password;
-	            var encodedToken = $base64.encode(decodedToken);
-           		return encodedToken;
-    		}
+	        getAllLanguages: function() {
+            	var req = {
+                    method: 'GET',
+                    url: 'api/languages',
+                    headers: {
+                        'Content-Type': 'application/json'
+                        // 'Authorization': 'Basic ' + token
+                    }
+                }
+                return $http(req)
+                		.then(function(result) {
+                			console.log("getlanguages");
+                			console.log(result);
+                            return result;
+                        })
+                        .catch(function(error) {
+                        	console.log(error);
+    						return error;
+    					});	         	
+       		},
 
 		}
 	}

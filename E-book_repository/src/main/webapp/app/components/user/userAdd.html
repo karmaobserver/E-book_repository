@@ -41,7 +41,7 @@
             <label>Category:</label>
         </div>
         <div class="col-xs-2">        
-            <select class="form-control" ng-init="vm.newCategorySelected = user.category.id" ng-model="vm.newCategorySelected" ng-options="category.id as category.name for category in vm.categories">   
+            <select class="form-control" ng-model="vm.newCategorySelected" ng-options="category.id as category.name for category in vm.categories">   
                 <option value="">--Select Category--</option>              
             </select>
         </div>

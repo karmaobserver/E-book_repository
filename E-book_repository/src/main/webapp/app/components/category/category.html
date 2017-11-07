@@ -1,7 +1,7 @@
 
 <div class="form-group row">
  	<div class="col-xs-12">
-		<p class="h3 bg-success" align="center">Categories</p>
+		<p class="h3" align="center">Categories</p>
 	</div>
 </div>
 
@@ -33,7 +33,7 @@
 
 <div ng-show="vm.hasEditError" class="row">
 	<div class="col-xs-4">
-		<div uib-alert ng-class="'alert-danger'" close="vm.closeAddAlert()"> {{vm.error}}</div>
+		<div uib-alert ng-class="'alert-danger'" close="vm.closeEditError()"> {{vm.error}}</div>
 	</div>
 </div>
 

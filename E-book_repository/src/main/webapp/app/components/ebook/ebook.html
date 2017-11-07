@@ -14,8 +14,10 @@
 			<option value="">All categories</option> 		    	
 		</select>
     </div>
+    <div class="col-xs-2">
+    	<button type="button" class="btn btn-warning margin5-button" ng-click="vm.ebookByCategory(vm.categorySelected)">Show by Category</button>
+    </div>
 </div>
-<button type="button" class="btn btn-warning margin5-button" ng-click="vm.ebookByCategory(vm.categorySelected)">Search</button>
 <br>
 
 <div class="table-responsive">
@@ -28,24 +30,63 @@
 		        <th>Publication Year</th>
 		        <th>Category</th>
 		        <th>Language</th>
+		        <th>File name</th>
 		        <th>User added</th>
 		        <th>Options</th>   
 		    </tr>
 		</thead>
 		<tbody>
 			<tr ng-repeat="ebook in vm.ebooks">
-			    <td>{{ebook.title}}</td>
-			    <td>{{ebook.author}}</td>
-			    <td>{{ebook.keywords}}</td>
-			    <td>{{ebook.publicationYear}}</td>
-			    <td>{{ebook.category.name}}</td>
-			    <td>{{ebook.language.name}}</td>
-			    <td>{{ebook.users.username}}</td>
-			    <td  class="td-buttons" align="center">
-			    	<button type="button" class="btn btn-warning margin5-button" ng-click="vm.edit(task.id)">Edit</button>
-			    	<button type="button" class="btn btn-danger" ng-click="vm.deleteProcessInstace(task.processInstanceId)">Remove</button>
+				<td ng-if="vm.isEditing === true && vm.ebookId == ebook.id"><input type="text"  class="form-control" ng-model="vm.title" ng-init="vm.title = ebook.title" ng-value="ebook.title"></td>
+			    <td ng-if="vm.isEditing === false || vm.ebookId != ebook.id">{{ebook.title}}</td>
+
+			    <td ng-if="vm.isEditing === true && vm.ebookId == ebook.id"><input type="text"  class="form-control" ng-model="vm.author" ng-init="vm.author = ebook.author" ng-value="ebook.author"></td>
+			    <td ng-if="vm.isEditing === false || vm.ebookId != ebook.id">{{ebook.author}}</td>
+
+			    <td ng-if="vm.isEditing === true && vm.ebookId == ebook.id"><input type="text"  class="form-control" ng-model="vm.keywords" ng-init="vm.keywords = ebook.keywords" ng-value="ebook.keywords"></td>
+			    <td ng-if="vm.isEditing === false || vm.ebookId != ebook.id">{{ebook.keywords}}</td>
+
+			    <td ng-if="vm.isEditing === true && vm.ebookId == ebook.id"><input type="text"  class="form-control" ng-model="vm.publicationYear" ng-init="vm.publicationYear = ebook.publicationYear" ng-value="ebook.publicationYear"></td>
+			    <td ng-if="vm.isEditing === false || vm.ebookId != ebook.id">{{ebook.publicationYear}}</td>
+
+			    <td ng-if="vm.isEditing === true && vm.ebookId == ebook.id">
+			    	<select class="form-control" ng-init="vm.categorySelected = ebook.category.id" ng-model="vm.categorySelected" ng-options="category.id as category.name for category in vm.categories">   
+		    	 		<option ></option> 		    	
+					</select>
+				</td>
+			    <td ng-if="vm.isEditing === false || vm.ebookId != ebook.id">{{ebook.category.name}}</td>
+
+			    <td ng-if="vm.isEditing === true && vm.ebookId == ebook.id">
+			    	<select class="form-control" ng-init="vm.languageSelected = ebook.language.id" ng-model="vm.languageSelected" ng-options="language.id as language.name for language in vm.languages">   
+		    	 		<option ></option> 		    	
+					</select>
+				</td>
+			    <td ng-if="vm.isEditing === false || vm.ebookId != ebook.id">{{ebook.language.name}}</td>
+
+			    <td ng-if="vm.isEditing === true && vm.ebookId == ebook.id"><input type="text"  class="form-control" ng-model="vm.fileName" ng-init="vm.fileName = ebook.fileName" ng-value="ebook.fileName"></td>
+			    <td ng-if="vm.isEditing === false || vm.ebookId != ebook.id">{{ebook.fileName}}</td>
+
+			    <td ng-if="vm.isEditing === true && vm.ebookId == ebook.id">
+			    	<select class="form-control" ng-init="vm.userSelected = ebook.users.id" ng-model="vm.userSelected" ng-options="user.id as user.username for user in vm.users">   
+		    	 		<option ></option> 		    	
+					</select>
+				</td>
+			    <td ng-if="vm.isEditing === false || vm.ebookId != ebook.id">{{ebook.users.username}}</td>
+			    <td class="td-buttons" align="center">
+			    	<button ng-if="vm.isEditing === false || vm.ebookId != ebook.id" type="button" class="btn btn-warning margin5-button" ng-click="vm.editEbook(ebook.id)">Edit</button>
+			    	<button ng-if="vm.isEditing === false || vm.ebookId != ebook.id" type="button" class="btn btn-danger" ng-click="vm.deleteEbook(ebook.id)">Remove</button>
+			    	<button ng-if="vm.isEditing === true && vm.ebookId == ebook.id" type="button" class="btn btn-success margin5-button" ng-click="vm.modiflyEbook(ebook.id)">Save</button>
+			    	<button ng-if="vm.isEditing === true && vm.ebookId == ebook.id" class="btn btn-danger" type="button" ng-click="vm.editEbookCancel()">Cancle</button>
 			    </td>
 			</tr>
 		</tbody>
 	</table>
 </div>
+<div ng-show="vm.hasEditError" class="row">
+	<div class="col-xs-4">
+		<div uib-alert ng-class="'alert-danger'" close="vm.closeAddAlert()"> {{vm.error}}</div>
+	</div>
+</div>
+
+<button ng-if="vm.isEditing === false" type="button" class="btn btn-Success" ng-click="vm.addEbook()">Add New Ebook</button>	
+{{vm.userSelected}}

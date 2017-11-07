@@ -36,4 +36,11 @@ public class CategoryService implements GenericService<Category>{
 		return category;
 	}
 
+	@Override
+	public void deleteById(long id) {
+		categoryRepository.delete(id);
+	}
+	
+	
+
 }

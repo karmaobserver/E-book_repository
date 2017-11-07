@@ -59,7 +59,22 @@
 								console.log('dOSLO DO CATCH');
 							});
 			}
-		} 
+		}
+
+		vm.deleteCategory = function(categoryId) {
+			CategoryService.removeCategory(categoryId)
+						.then(function(response) {
+							console.log('Deleted category');
+							CategoryService.getAllCategories().then(function(response) {
+					        	console.log(response.data);
+					        	vm.categories = response.data;
+					        });
+
+						})
+						.catch(function(response) {
+							console.log('dOSLO DO CATCH');
+						});
+		}
 
 		vm.addCategory = function() {
 			$state.go('categoryAdd');
@@ -89,8 +104,8 @@
 			
 		}
 
-		vm.closeAddAlert = function() {
-			vm.hasAddError = false;
+		vm.closeEditError = function() {
+			vm.hasEditError = false;
 		}    
 		 	
 	}

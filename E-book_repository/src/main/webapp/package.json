@@ -1,0 +1,17 @@
+{
+  "name": "ebookApp",
+  "description": "gulp",
+  "main": "index.js",
+  "devDependencies": {
+   
+  },
+  "scripts": {
+    "test": "test"
+  },
+  "author": "A B M",
+  "license": "ISC",
+  "dependencies": {
+    "angular-local-storage": "^0.5.2"
+    
+  }
+}

@@ -2,6 +2,8 @@ package makso.rs.controller;
 
 import java.util.List;
 
+import org.apache.commons.logging.impl.Log4JLogger;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,8 @@ public class CategoryController {
 	@Autowired
 	CategoryService categoryService;
 	
+	private static Log4JLogger logger = new Log4JLogger(CategoryController.class.getName());
+
 	@RequestMapping(value = "/categories", method = RequestMethod.GET)
 	public ResponseEntity<List<Category>> getCategories() {
 		List<Category> categories = (List<Category>) categoryService.getAll();
@@ -78,6 +82,23 @@ public class CategoryController {
   
        
         return new ResponseEntity<Category>(category, HttpStatus.CREATED);
+    }
+    
+    
+    //------------------- Delete a Category --------------------------------------------------------
+    
+    @RequestMapping(value = "/deleteCategory", method = RequestMethod.DELETE)
+    public ResponseEntity<Category> deleteCategory(@RequestBody long categoryId) {
+        System.out.println("Deleting Category with id " + categoryId);
+  
+        Category category = categoryService.findById(categoryId);
+        if (category == null) {
+            System.out.println("Unable to delete. Category with id " + categoryId + " not found");
+            return new ResponseEntity<Category>(HttpStatus.NOT_FOUND);
+        }
+  
+        categoryService.deleteById(categoryId);
+        return new ResponseEntity<Category>(HttpStatus.NO_CONTENT);
     }
 
 }
