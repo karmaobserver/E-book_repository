@@ -29,6 +29,15 @@ public class FileSystemStorageService implements StorageService  {
     }
     
     @Override
+	public void init() {
+    	try {
+            Files.createDirectory(rootLocation);
+        } catch (IOException e) {
+            throw new StorageException("Could not initialize storage", e);
+        }	
+	}
+    
+    @Override
     public void store(MultipartFile file, Ebook ebook) {
 		// TODO Auto-generated method stub
 	    try {
@@ -36,31 +45,33 @@ public class FileSystemStorageService implements StorageService  {
 	            throw new StorageException("Failed to store empty file " + file.getOriginalFilename());
 	        }
 	        
-	        String filename = addTimestampToFilename(file.getOriginalFilename());
-	        ebook.setFileName(filename);
+	        /*String filename = addTimestampToFilename(file.getOriginalFilename());
+	        ebook.setFileName(filename);*/
 	        
 	        
-	        if(Files.notExists(this.rootLocation.resolve(filename))){
+	        if(Files.notExists(this.rootLocation.resolve(ebook.getFileName()))){
 	        	//Files.createDirectory(this.rootLocation.resolve(file.getOriginalFilename()));
 	        	File temp = new File(ResourceBundle.getBundle("index").getString("docs"));
 	        	boolean succ = temp.mkdirs();
 	        }
 	        
-	        Files.copy(file.getInputStream(), this.rootLocation.resolve(filename));
-	        File uploadedFile = new File(this.rootLocation.resolve(filename).toString());
-	        IndexManager.getIndexer().index(uploadedFile,ebook);
+	        Files.copy(file.getInputStream(), this.rootLocation.resolve(ebook.getFileName()));
+	        File uploadedFile = new File(this.rootLocation.resolve(ebook.getFileName()).toString());
+	        IndexManager.getIndexer().index(uploadedFile, ebook);
 	    } catch (IOException e) {
 	        throw new StorageException("Failed to store file " + file.getOriginalFilename(), e);
-	    }
+	    } 
 	}
     
-	private String addTimestampToFilename(String filename){
+	/*private String addTimestampToFilename(String filename){
 			
 		String[] parts= filename.split("\\.");
 		SimpleDateFormat sdf = new SimpleDateFormat("dd_MM_yyyy_HH_mm_ss");
 		return parts[0] + "_" + sdf.format(new Date()) + "." + parts[1] ;
 		
 		
-	}
+	}*/
+
+	
     
 }

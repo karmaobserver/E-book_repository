@@ -38,21 +38,20 @@ public class Ebook implements Serializable {
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "LANGUAGE")
-	@JsonManagedReference
+	@JsonManagedReference(value="language-ebooks")
 	private Language language;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "USERS")
-	@JsonManagedReference
+	@JsonManagedReference(value="users-ebooks")
 	private User users;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "CATEGORY")
-	@JsonManagedReference
+	@JsonManagedReference(value="category-ebooks")
 	private Category category;
 	
 	private String highlight;
-
 	
 	public Ebook(Long id, String title, String author, String keywords, Integer publicationYear, String fileName,
 			String mime, Language language, User users, Category category) {

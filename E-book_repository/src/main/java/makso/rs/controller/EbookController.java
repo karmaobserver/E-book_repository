@@ -154,37 +154,44 @@ public class EbookController {
     //-------------------Add a Ebook--------------------------------------------------------
     
 	@RequestMapping(value = "/ebookAdd", method = RequestMethod.POST)
-	public ResponseEntity<Ebook> addEbook(@RequestBody EbookViewModel ebookViewModel) {
-	    System.out.println("Creating Ebook " + ebookViewModel.getEbook().getTitle());
-	    System.out.println("Creating Ebook " + ebookViewModel.getFile().getName());
+	public ResponseEntity<Ebook> addEbook(@RequestPart("ebook") EbookAddDto ebookAddDto, @RequestPart("file") MultipartFile file) {
+	    System.out.println("Creating Ebook " + ebookAddDto.getTitle());
+	    System.out.println("Creating Ebook " + file.getOriginalFilename());
 	    
-	   /* //check if filename already exists
+	    //check if filename already exists
 	    if (ebookService.findEbookByFileName(ebookAddDto.getFileName()) != null) {
 	        System.out.println("A Filename with name " + ebookAddDto.getFileName() + " already exist");
-	        return new ResponseEntity<Ebook>(HttpStatus.CONFLICT);
-	    }*/
+	        return new ResponseEntity<>(HttpStatus.CONFLICT);
+	    }
 	    
-	    ebookViewModel.getEbook().setId(System.currentTimeMillis());
-		storageService.store(ebookViewModel.getFile(),ebookViewModel.getEbook());
-	                 
-	    return new ResponseEntity<Ebook>(ebookViewModel.getEbook(), HttpStatus.CREATED);
-	}
-	
-	//-------------------Add a Ebook--------------------------------------------------------
-    
-	/*@RequestMapping(value = "/upload", method = RequestMethod.POST)
-	public ResponseEntity<Ebook> upload(@RequestBody MultipartFile file) {
-	    System.out.println("Adding Ebook file name: " + file);
-	   
+	    Ebook ebook = new Ebook();
+        
+        User ebookUser = userService.findById(ebookAddDto.getUserId());                        
+        Category ebookCategory = categoryService.findById(ebookAddDto.getCategoryId());
+        Language ebookLanguage = languageService.findById(ebookAddDto.getLanguageId());
+        
+        ebook.setTitle(ebookAddDto.getTitle());
+        ebook.setAuthor(ebookAddDto.getAuthor());
+        ebook.setKeywords(ebookAddDto.getKeywords());
+        ebook.setPublicationYear(ebookAddDto.getPublicationYear());
+        ebook.setFileName(ebookAddDto.getFileName()+".pdf");
+        ebook.setCategory(ebookCategory);
+        ebook.setLanguage(ebookLanguage);
+        ebook.setUsers(ebookUser);
+        ebook.setMime(ebookAddDto.getMime());
 	    
-	    Ebook ebook = EbookPDFHandler.createEbookFromPDF(file);
-		System.out.println(ebook);
+        //TODO make better way
+        ebook.setId(System.currentTimeMillis());
+        
+        //Store ebook
+		storageService.store(file, ebook);
 	                 
 	    return new ResponseEntity<Ebook>(ebook, HttpStatus.CREATED);
-	}*/
+	}
+	
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
 	public ResponseEntity<Ebook> upload(@RequestBody MultipartFile file) {
-	    System.out.println("Adding Ebook file name: " + file);
+	    System.out.println("Adding Ebook file name: " + file.getOriginalFilename());
 	   
 	    
 	    Ebook ebook = EbookPDFHandler.createEbookFromPDF(file);

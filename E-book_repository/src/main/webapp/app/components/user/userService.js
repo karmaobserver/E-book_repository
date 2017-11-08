@@ -52,6 +52,28 @@
                         });            
             },
 
+            getUserById: function(userId) {
+                var req = {
+                    method: 'POST',
+                    url: 'api/getUserById',
+                    headers: {
+                        'Content-Type': 'application/json'
+                        // 'Authorization': 'Basic ' + token
+                    },
+                    data: userId
+                }
+                return $http(req)
+                        .then(function(result) {
+                            console.log("getUser");
+                            console.log(result);
+                            return result;
+                        })
+                        .catch(function(error) {
+                            console.log(error);
+                            return error;
+                        });            
+            },
+
             removeUser: function(userId) {
             var req = {
                 method: 'DELETE',

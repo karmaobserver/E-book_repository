@@ -30,7 +30,7 @@ public class Language implements Serializable {
 	private String name;
 	
 	@OneToMany(mappedBy = "language", cascade = CascadeType.ALL)
-	@JsonBackReference
+	@JsonBackReference(value="language-ebooks")
 	private List<Ebook> ebooks;
 
 

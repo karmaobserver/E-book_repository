@@ -15,6 +15,8 @@
 		vm.file = null;
 		vm.showUploadSpinner = false;
 
+		
+
 		vm.userIdLogged = localStorageService.get("userId");
 
 		getAllEbooks();
@@ -131,12 +133,14 @@
 			$state.go('ebooks');
 		}
 
+		
 		vm.upload = function(files) {
 			console.log(files[0]);
+
 			var formData = new FormData();
 			formData.append("file", files[0]);
 			vm.file = formData;
-
+			
 			console.log(formData);
 
 			vm.showUploadSpinner = true;
@@ -148,12 +152,13 @@
 						vm.ebook = response.data;
 
 						vm.ebook.mime = "application/pdf";
-						vm.ebook.fileName = files[0].name;
-
+						vm.ebook.fileName = files[0].name.slice(0, -4);
+						
 						// TODO: you can change these things
 						vm.ebook.publicationYear = 1984;
 						vm.ebook.language = vm.languages[1];
 						vm.ebook.category = vm.categories[1];
+						console.log(vm.ebook.category.id);
 						vm.showUploadSpinner = false;
 								
 					})
@@ -164,18 +169,24 @@
 		}
 
 		vm.addNewEbook = function() {
-			
-			/*if (!vm.newTitle) {	//if string is empty
+
+			if (!vm.ebook.title) {	//if string is empty
 				vm.hasAddError = true;
 				vm.error = "Title can not be empty!";
-			} else if (!vm.newFileName) {	//if string is empty
+			} else if (!vm.ebook.fileName) {	//if string is empty
 				vm.hasAddError = true;
 				vm.error = "File name can not be empty!";
 			} else {
+
 				var newEbook = {};
-				newEbook = {title: vm.newTitle, author: vm.newAuthor,  keywords: vm.newKeywords,  publicationYear: vm.newPublicationYear, categoryId: vm.newCategorySelected, 
-		   			languageId: vm.newLanguageSelected, userId: vm.userIdLogged, fileName: vm.newFileName, mime: vm.newMime};
-				EbookService.addNewEbook(newEbook)
+				newEbook = {title: vm.ebook.title, author: vm.ebook.author,  keywords: vm.ebook.keywords,  publicationYear: vm.ebook.publicationYear, categoryId: vm.ebook.category.id, 
+		   			languageId: vm.ebook.language.id, userId: vm.userIdLogged, fileName: vm.ebook.fileName, mime: vm.ebook.mime};
+
+				vm.file.append('ebook', new Blob([JSON.stringify(newEbook)], {
+					type: "application/json"
+				}));
+
+				EbookService.addNewEbook(vm.file)
 						.then(function(response) {
 							if (response.status == 409) {
 					   				vm.hasAddError = true;
@@ -183,36 +194,20 @@
 					   		} else {
 								console.log('Added new ebook');
 								console.log(response.data);
-								$state.go('ebooks');
+								//$state.go('ebooks');
 							}
 						})
 						.catch(function (response) {
 							console.log('dOSLO DO CATCH');
 						});
-			}*/
-			
-			vm.file.append('ebook', new Blob([JSON.stringify(vm.ebook)], {
-				type: "application/json"
-			}));
-
-			EbookService.addNewEbook(vm.file)
-					.then(function(response) {
-						console.log('added ebook');
-						console.log(response.data);
-
-					})
-					.catch(function (response) {
-						console.log('dOSLO DO CATCH');
-					});
-			
+			}
+		
 		}
 
 		vm.closeAddAlert = function() {
 			vm.hasAddError = false;
 			vm.hasEditError = false;
 		}
-
-		//-------------------------------------------------------------------------------------------------------------------------------------------                
 		 	
 	}
 })();

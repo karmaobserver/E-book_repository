@@ -168,5 +168,20 @@ public class UserController {
         userService.deleteById(userId);
         return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
     }
+    
+ //------------------- getUserById --------------------------------------------------------
+    
+    @RequestMapping(value = "/getUserById", method = RequestMethod.POST)
+    public ResponseEntity<User> getUserById(@RequestBody long userId) {
+        System.out.println("Get User with id " + userId);
+  
+        User user = userService.findById(userId);
+        if (user == null) {
+            System.out.println("Unable to find user. User with id " + userId + " not found");
+            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+        }
+  
+        return new ResponseEntity<User>(user, HttpStatus.OK);
+    }
 
 }

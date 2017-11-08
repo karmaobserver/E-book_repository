@@ -11,6 +11,7 @@ public class EbookAddDto {
 	private long categoryId;
 	private long userId;
 	private long languageId;
+	
 	public String getTitle() {
 		return title;
 	}

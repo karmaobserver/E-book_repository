@@ -22,11 +22,11 @@ public class Category implements Serializable {
 	private String name;
 	
 	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-	@JsonBackReference
+	@JsonBackReference(value="category-ebooks")
 	private List<Ebook> ebooks;
 	
 	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-	@JsonBackReference
+	@JsonBackReference(value="category-users")
 	private List<User> users;
 
 	public long getId() {

@@ -24,6 +24,8 @@ public interface StorageService {
     Resource loadAsResource(String filename);
 
     void deleteAll();*/
+	
+	void init();
 
 	void store(MultipartFile file, Ebook ebook);
 

@@ -35,12 +35,12 @@ public class User implements Serializable {
 	private String userType;
 	
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
-	@JsonBackReference
+	@JsonBackReference(value="users-ebooks")
 	private List<Ebook> ebooks;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "CATEGORY")
-	@JsonManagedReference
+	@JsonManagedReference(value="category-users")
 	private Category category;
 
 	public User(Long id, String firstName, String lastName, String username, String password, String userType,
