@@ -1,8 +1,13 @@
 package makso.rs.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
+import java.util.ResourceBundle;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -62,6 +67,8 @@ public class EbookController {
 	
 	@Autowired
 	StorageService storageService;
+	
+	private static final int BUFFER_SIZE = 4096;
 	
 	//-------------------List all ebooks--------------------------------------------------------
 	
@@ -146,6 +153,35 @@ public class EbookController {
 	    return new ResponseEntity<Ebook>(ebook, HttpStatus.CREATED);
 	}
 	
+	//-------------------Download a Ebook--------------------------------------------------------
 	
+	@RequestMapping(value = "/downloadEbook", method = RequestMethod.POST)
+	public void downloadEbook(HttpServletRequest request, HttpServletResponse response, @RequestBody String fileName) throws IOException {
+		System.out.println("Download filename: " + fileName);
+		ServletContext context = request.getServletContext();
+		String filePath = ResourceBundle.getBundle("index").getString("docs") + File.separator + fileName;
+		File downloadFile = new File(filePath);
+        FileInputStream inputStream = new FileInputStream(downloadFile);   
+        String mimeType = context.getMimeType(filePath);
+        if (mimeType == null) {
+            mimeType = "application/octet-stream";
+        }
+        response.setContentType(mimeType);
+        response.setContentLength((int) downloadFile.length());
+        String headerKey = "Content-Disposition";
+        String headerValue = String.format("attachment; filename=\"%s\"", downloadFile.getName());
+        response.setHeader(headerKey, headerValue);
+        OutputStream outStream = response.getOutputStream();
+        byte[] buffer = new byte[BUFFER_SIZE];
+        int bytesRead = -1;
+
+        while ((bytesRead = inputStream.read(buffer)) != -1) {
+            outStream.write(buffer, 0, bytesRead);
+        }
+ 
+        inputStream.close();
+        outStream.close();
+		
+	}
 
 }
