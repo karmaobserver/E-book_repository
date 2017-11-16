@@ -11,9 +11,10 @@ public class EbookDocument {
 	private String mime;
 	private String language;
 	private String category;
+	private String user;
 	
 	public EbookDocument(Integer ebookId, String title, String author, String keywords, Integer publicationYear,
-			String filename, String mime, String language, String category) {
+			String filename, String mime, String language, String category, String user) {
 		super();
 		this.ebookId = ebookId;
 		this.title = title;
@@ -24,6 +25,7 @@ public class EbookDocument {
 		this.mime = mime;
 		this.language = language;
 		this.category = category;
+		this.user = user;
 	}
 
 	public EbookDocument() {
@@ -101,5 +103,13 @@ public class EbookDocument {
 	public void setCategory(String category) {
 		this.category = category;
 	}
-	
+
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
+	}
+		
 }

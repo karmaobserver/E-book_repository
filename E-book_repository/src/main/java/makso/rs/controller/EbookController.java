@@ -1,11 +1,20 @@
 package makso.rs.controller;
 
+import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.lucene.document.Document;
+import org.apache.lucene.index.Term;
 import org.apache.lucene.search.MatchAllDocsQuery;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.TermQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javassist.NotFoundException;
 import makso.rs.dto.CategoryDto;
 import makso.rs.dto.EbookAddDto;
 import makso.rs.dto.EbookDto;
@@ -27,7 +37,10 @@ import makso.rs.service.CategoryService;
 import makso.rs.service.EbookService;
 import makso.rs.service.LanguageService;
 import makso.rs.service.UserService;
+import makso.rs.udd.indexer.IndexManager;
+import makso.rs.udd.indexer.UDDIndexer;
 import makso.rs.udd.searcher.InformationRetriever;
+import makso.rs.udd.searcher.ResultRetriever;
 import makso.rs.util.EbookPDFHandler;
 import makso.rs.util.StorageService;
 
@@ -50,105 +63,62 @@ public class EbookController {
 	@Autowired
 	StorageService storageService;
 	
+	//-------------------List all ebooks--------------------------------------------------------
+	
 	@RequestMapping(value = "/ebooks", method = RequestMethod.GET)
 	public ResponseEntity<List<Ebook>> getEbooks() {
-		List<Ebook> ebooks = (List<Ebook>) ebookService.getAll();
-		//List<Ebook> ebooks = InformationRetriever.getData(new MatchAllDocsQuery());
+		List<Ebook> ebooks = ebookService.getAll();
 		return new ResponseEntity<List<Ebook>>(ebooks, HttpStatus.OK);
 		
 	}
 	
-	
-	 //-------------------Retrieve ebooks by Category--------------------------------------------------------
+	//-------------------Retrieve ebooks by Category--------------------------------------------------------
 	
 	@RequestMapping(value = "/ebooksByCategory", method = RequestMethod.POST)
-	public ResponseEntity<List<Ebook>> getEbooksByCategory(@RequestBody long categoryId) {
-		
-		System.out.println("Category ID:"+ categoryId);
-		List<Ebook> ebooksList = ebookService.getEbooksByCategory(categoryId);
-		System.out.println("Lista ebooks:" + ebooksList);
-		return new ResponseEntity<List<Ebook>>(ebooksList, HttpStatus.OK);
+	public ResponseEntity<List<Ebook>> getEbooksByCategory(@RequestBody Long categoryId) {		
+		List<Ebook> ebooks = ebookService.getEbooksByCategory(categoryId);	
+		return new ResponseEntity<List<Ebook>>(ebooks, HttpStatus.OK);
 	}
 	
-	//-------------------Edit a Ebook--------------------------------------------------------
-    
-    @RequestMapping(value = "/ebookEdit", method = RequestMethod.PUT)
-    public ResponseEntity<Ebook> editEbook(@RequestBody EbookDto ebookDto) {
-        System.out.println("Editing Ebook " + ebookDto.getTitle());
-        System.out.println("Kategorija ID je:" + ebookDto.getCategoryId());
-               
-        if (ebookDto.getTitle() == null || ebookDto.getTitle().equals("") || ebookDto.getFileName() == null || ebookDto.getFileName().equals("") ) {
-        	 System.out.println("A fields can't be null!");
-        	 return new ResponseEntity<Ebook>(HttpStatus.NOT_ACCEPTABLE);
-        }
-        
-        User ebookUser = userService.findById(ebookDto.getUserId());                        
-        Category ebookCategory = categoryService.findById(ebookDto.getCategoryId());
-        Language ebookLanguage = languageService.findById(ebookDto.getLanguageId());
-        Ebook ebook = ebookService.findById(ebookDto.getEbookId());
-      
-        ebook.setTitle(ebookDto.getTitle());
-        ebook.setAuthor(ebookDto.getAuthor());
-        ebook.setKeywords(ebookDto.getKeywords());
-        ebook.setPublicationYear(ebookDto.getPublicationYear());
-        ebook.setFileName(ebookDto.getFileName());
-        ebook.setCategory(ebookCategory);
-        ebook.setLanguage(ebookLanguage);
-        ebook.setUsers(ebookUser);
-        
-        ebookService.save(ebook);
-  
+	//-------------------Get ebook data based on ebook id--------------------------------------------------------
+	
+	@RequestMapping(value = "/getEbookData", method = RequestMethod.POST)
+    public ResponseEntity<Ebook> editEbook(@RequestBody Long ebookId) {
+        System.out.println("Editing Ebook id" + ebookId);  
+        Ebook ebook = ebookService.findById(ebookId); 
         return new ResponseEntity<Ebook>(ebook, HttpStatus.OK);
     }
-    
-    
-    //-------------------Create a Ebook--------------------------------------------------------
-    
-    /*@RequestMapping(value = "/ebookAdd", method = RequestMethod.POST)
-    public ResponseEntity<Ebook> createEbook(@RequestBody EbookAddDto ebookAddDto) {
-        System.out.println("Creating Ebook " + ebookAddDto.getTitle());
-        
-        //check if filename already exists
-        if (ebookService.findEbookByFileName(ebookAddDto.getFileName()) != null) {
-            System.out.println("A Filename with name " + ebookAddDto.getFileName() + " already exist");
-            return new ResponseEntity<Ebook>(HttpStatus.CONFLICT);
-        }
-        
-        Ebook ebook = new Ebook();
-        
-        User ebookUser = userService.findById(ebookAddDto.getUserId());                        
-        Category ebookCategory = categoryService.findById(ebookAddDto.getCategoryId());
-        Language ebookLanguage = languageService.findById(ebookAddDto.getLanguageId());
-        
-        ebook.setTitle(ebookAddDto.getTitle());
-        ebook.setAuthor(ebookAddDto.getAuthor());
-        ebook.setKeywords(ebookAddDto.getKeywords());
-        ebook.setPublicationYear(ebookAddDto.getPublicationYear());
-        ebook.setFileName(ebookAddDto.getFileName());
-        ebook.setCategory(ebookCategory);
-        ebook.setLanguage(ebookLanguage);
-        ebook.setUsers(ebookUser);
-        ebook.setMime(ebookAddDto.getMime());
-                     
-        ebookService.save(ebook);
-        return new ResponseEntity<Ebook>(ebook, HttpStatus.CREATED);
-    }*/
-    
-    
+	
+	
+	//-------------------Edit a Ebook--------------------------------------------------------
+	
+	@RequestMapping(value = "/ebookEdit", method = RequestMethod.POST)
+	public ResponseEntity<Ebook> editEbook(@RequestPart("ebook") EbookDto ebookDto, @RequestPart(name="file",required=false) MultipartFile file) {
+	    System.out.println("Creating Ebook " + ebookDto.getTitle());
+	    //System.out.println("Creating Ebook " + file.getOriginalFilename());
+	    System.out.println("Creating Ebook edited filename" + ebookDto.getFileName());
+	    System.out.println("Creating Ebook " +   ebookDto);
+	    
+	    if(file==null){
+			Ebook ebookToUpdate = ebookService.findById(ebookDto.getEbookId());
+			Ebook ebook = ebookService.updateEbookWithoutFile(ebookToUpdate, ebookDto);
+			System.out.println(ebook.getAuthor() + " and " + ebook.getTitle());
+			return new ResponseEntity<Ebook>(ebook, HttpStatus.CREATED);
+		}else{
+			ebookService.deleteById(ebookDto.getEbookId());
+			Ebook ebook = ebookService.updateEbookWithFile(ebookDto, file);
+			return new ResponseEntity<Ebook>(ebook, HttpStatus.CREATED);
+			
+		}               
+	}
+       
     //------------------- Delete a Ebook --------------------------------------------------------
     
     @RequestMapping(value = "/deleteEbook", method = RequestMethod.DELETE)
-    public ResponseEntity<Ebook> deleteEbook(@RequestBody long ebookId) {
-        System.out.println("Deleting Ebook with id " + ebookId);
-  
-        Ebook ebook = ebookService.findById(ebookId);
-        if (ebook == null) {
-            System.out.println("Unable to delete. Ebook with id " + ebookId + " not found");
-            return new ResponseEntity<Ebook>(HttpStatus.NOT_FOUND);
-        }
-  
+    public ResponseEntity<Ebook> deleteEbook(@RequestBody Long ebookId) throws NotFoundException {
+        System.out.println("Deleting Ebook with id " + ebookId);        
         ebookService.deleteById(ebookId);
-        return new ResponseEntity<Ebook>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<Ebook>(HttpStatus.OK);
     }
     
     //-------------------Add a Ebook--------------------------------------------------------
@@ -157,47 +127,25 @@ public class EbookController {
 	public ResponseEntity<Ebook> addEbook(@RequestPart("ebook") EbookAddDto ebookAddDto, @RequestPart("file") MultipartFile file) {
 	    System.out.println("Creating Ebook " + ebookAddDto.getTitle());
 	    System.out.println("Creating Ebook " + file.getOriginalFilename());
+	    System.out.println("Creating Ebook edited filename" + ebookAddDto.getFileName());
+	    System.out.println("Creating Ebook " +   ebookAddDto);
 	    
-	    //check if filename already exists
-	    if (ebookService.findEbookByFileName(ebookAddDto.getFileName()) != null) {
-	        System.out.println("A Filename with name " + ebookAddDto.getFileName() + " already exist");
-	        return new ResponseEntity<>(HttpStatus.CONFLICT);
-	    }
-	    
-	    Ebook ebook = new Ebook();
-        
-        User ebookUser = userService.findById(ebookAddDto.getUserId());                        
-        Category ebookCategory = categoryService.findById(ebookAddDto.getCategoryId());
-        Language ebookLanguage = languageService.findById(ebookAddDto.getLanguageId());
-        
-        ebook.setTitle(ebookAddDto.getTitle());
-        ebook.setAuthor(ebookAddDto.getAuthor());
-        ebook.setKeywords(ebookAddDto.getKeywords());
-        ebook.setPublicationYear(ebookAddDto.getPublicationYear());
-        ebook.setFileName(ebookAddDto.getFileName()+".pdf");
-        ebook.setCategory(ebookCategory);
-        ebook.setLanguage(ebookLanguage);
-        ebook.setUsers(ebookUser);
-        ebook.setMime(ebookAddDto.getMime());
-	    
-        //TODO make better way
-        ebook.setId(System.currentTimeMillis());
-        
-        //Store ebook
-		storageService.store(file, ebook);
-	                 
+	    Ebook ebook = ebookService.addEbook(ebookAddDto, file);
+	    if (ebook == null) {
+	    	//If file name already exists
+	    	return new ResponseEntity<>(HttpStatus.CONFLICT);
+	    }	                 
 	    return new ResponseEntity<Ebook>(ebook, HttpStatus.CREATED);
 	}
 	
+	//-------------------Upload a Ebook--------------------------------------------------------
+	
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
-	public ResponseEntity<Ebook> upload(@RequestBody MultipartFile file) {
-	    System.out.println("Adding Ebook file name: " + file.getOriginalFilename());
-	   
-	    
-	    Ebook ebook = EbookPDFHandler.createEbookFromPDF(file);
-		System.out.println(ebook);
-	                 
+	public ResponseEntity<Ebook> upload(@RequestBody MultipartFile file) {    
+	    Ebook ebook = ebookService.upload(file);      
 	    return new ResponseEntity<Ebook>(ebook, HttpStatus.CREATED);
 	}
+	
+	
 
 }

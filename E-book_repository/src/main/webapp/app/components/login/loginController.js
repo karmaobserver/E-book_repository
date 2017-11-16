@@ -31,13 +31,14 @@
    				vm.hasLoginError = true;
    				vm.errors.push("Password and Username do not match!");
    			} else {
-   				localStorageService.set("username", response.data.username);
-   				localStorageService.set("userType", response.data.userType);
-   				localStorageService.set("firstName", response.data.firstName);
-   				localStorageService.set("lastName", response.data.lastName);
-   				localStorageService.set("password", response.data.password);
-   				localStorageService.set("userCategory", response.data.category.name);
-          localStorageService.set("userId", response.data.id);
+          if (response.data.category == null) {
+            var currentUser = {username: response.data.username, password: response.data.password, firstName: response.data.firstName, lastName: response.data.lastName,
+              userType: response.data.userType, userCategory: response.data.category, userId: response.data.id}
+          } else {
+            var currentUser = {username: response.data.username, password: response.data.password, firstName: response.data.firstName, lastName: response.data.lastName,
+              userType: response.data.userType, userCategory: response.data.category.name, userId: response.data.id}
+          }
+          localStorageService.set("currentUser", currentUser);
    				$state.go('home');
    			}
    		});    	

@@ -11,6 +11,9 @@ public class EbookDto {
 	private long categoryId;
 	private long userId;
 	private long languageId;
+	private String mime;
+	
+	
 	public String getTitle() {
 		return title;
 	}
@@ -65,6 +68,14 @@ public class EbookDto {
 	public void setLanguageId(long languageId) {
 		this.languageId = languageId;
 	}
+	public String getMime() {
+		return mime;
+	}
+	public void setMime(String mime) {
+		this.mime = mime;
+	}
+	
+	
 	
 	
 

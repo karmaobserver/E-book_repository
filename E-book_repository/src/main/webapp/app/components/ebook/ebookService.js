@@ -16,13 +16,10 @@
                 url: 'api/ebooks',
                 headers: {
                     'Content-Type': 'application/json'
-                    // 'Authorization': 'Basic ' + token
                 }
             }
             return $http(req)
             		.then(function(result) {
-            			console.log("getEbooks");
-            			console.log(result);
                         return result;
                     })
                     .catch(function(error) {
@@ -37,7 +34,6 @@
                 url: 'api/ebooksByCategory',
                 headers: {
                     'Content-Type': 'application/json'
-                    // 'Authorization': 'Basic ' + token
                 },
                 data: categoryId
             }
@@ -59,7 +55,6 @@
                 url: 'api/deleteEbook',
                 headers: {
                     'Content-Type': 'application/json'
-                    // 'Authorization': 'Basic ' + token
                 },
                 data: ebookId
             }
@@ -75,19 +70,18 @@
                     });         
             },
 
-            modiflyEbook: function(ebook) {
+            getEbookDataById: function(ebookId) {
             var req = {
-                method: 'PUT',
-                url: 'api/ebookEdit',
+                method: 'POST',
+                url: 'api/getEbookData',
                 headers: {
                     'Content-Type': 'application/json'
-                    // 'Authorization': 'Basic ' + token
                 },
-                data: ebook
+                data: ebookId
             }
             return $http(req)
                     .then(function(result) {
-                        console.log("Ebook modificated");
+                        console.log("Ebook edited");
                         console.log(result);
                         return result;
                     })
@@ -119,6 +113,28 @@
                     });         
             },
 
+            editEbook: function(file) {
+            var req = {
+                transformRequest: angular.identity,
+                method: 'POST',
+                url: 'api/ebookEdit',
+                headers: {
+                    'Content-Type': undefined
+                },
+                data: file
+            }
+            return $http(req)
+                    .then(function(result) {
+                        console.log("Ebook edited!");
+                        console.log(result);
+                        return result;
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                        return error;
+                    });         
+            },
+
             upload: function(file) {
             var req = {
                 transformRequest: angular.identity,
@@ -132,6 +148,27 @@
             return $http(req)
                     .then(function(result) {
                         console.log("Uploaded!");
+                        console.log(result);
+                        return result;
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                        return error;
+                    });         
+            },
+
+            downloadEbook: function(fileName) {
+            var req = {
+                method: 'POST',
+                url: 'api/downloadEbook',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                data: fileName
+            }
+            return $http(req)
+                    .then(function(result) {
+                        console.log("Ebook downloaded");
                         console.log(result);
                         return result;
                     })

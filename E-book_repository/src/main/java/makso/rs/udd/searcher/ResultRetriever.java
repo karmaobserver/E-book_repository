@@ -21,6 +21,7 @@ import org.apache.lucene.store.SimpleFSDirectory;
 import org.apache.lucene.util.Version;
 
 import makso.rs.udd.analyzer.SerbianAnalyzer;
+import makso.rs.udd.indexer.UDDIndexer;
 
 public class ResultRetriever {
 	

@@ -1,5 +1,13 @@
 package makso.rs.udd.indexer;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ResourceBundle;
+
+import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.SimpleFSDirectory;
+
 public class IndexManager {
 	
 	//true po default-u udd
@@ -16,5 +24,20 @@ public class IndexManager {
 	public static void restart(){
 		indexer.restart();
 	}
+	
+	/*public static void IndexInit() {
+		String path = ResourceBundle.getBundle("index").getString("index");
+		File indexDirPath = new File(path);
+		Directory indexDir;
+		try {
+			indexDir = new SimpleFSDirectory(indexDirPath);
+			DirectoryReader reader = DirectoryReader.open(indexDir);
+		} catch (IOException e) {
+			System.out.println("USAO ");
+			getIndexer();
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}*/
 
 }

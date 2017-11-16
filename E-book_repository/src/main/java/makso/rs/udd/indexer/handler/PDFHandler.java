@@ -209,9 +209,13 @@ public class PDFHandler extends DocumentHandler {
 		doc.add(new StringField("ebookId", ebook.getId().toString(), Store.YES));
 		doc.add(new StringField("publicationYear", ebook.getPublicationYear().toString(), Store.YES));
 		doc.add(new StringField("mime", ebook.getMime(), Store.YES));
+		System.out.println("File name of the book in document: " + ebook.getFileName());
 		doc.add(new StringField("fileName", ebook.getFileName(), Store.YES));
+		System.out.println("Cateogry name of the book in document: " + ebook.getCategory().getName());
 		doc.add(new StringField("category", ebook.getCategory().getName(), Store.YES));
 		doc.add(new TextField("language", ebook.getLanguage().getName(), Store.YES));
+		System.out.println("User name of the book in document: " + ebook.getUsers().getUsername());
+		doc.add(new TextField("user", ebook.getUsers().getUsername(), Store.YES));
 		
 		DocumentManager.printDocument(doc);
 		

@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ResourceBundle;
 
+import org.apache.lucene.document.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,15 +45,12 @@ public class FileSystemStorageService implements StorageService  {
 	    	if (file.isEmpty()) {
 	            throw new StorageException("Failed to store empty file " + file.getOriginalFilename());
 	        }
-	        
-	        /*String filename = addTimestampToFilename(file.getOriginalFilename());
-	        ebook.setFileName(filename);*/
-	        
-	        
+	        	        
 	        if(Files.notExists(this.rootLocation.resolve(ebook.getFileName()))){
 	        	//Files.createDirectory(this.rootLocation.resolve(file.getOriginalFilename()));
 	        	File temp = new File(ResourceBundle.getBundle("index").getString("docs"));
-	        	boolean succ = temp.mkdirs();
+	        	boolean dir = temp.mkdirs();
+	        	System.out.println("created dir: " + dir);
 	        }
 	        
 	        Files.copy(file.getInputStream(), this.rootLocation.resolve(ebook.getFileName()));
@@ -63,15 +61,17 @@ public class FileSystemStorageService implements StorageService  {
 	    } 
 	}
     
-	/*private String addTimestampToFilename(String filename){
-			
-		String[] parts= filename.split("\\.");
-		SimpleDateFormat sdf = new SimpleDateFormat("dd_MM_yyyy_HH_mm_ss");
-		return parts[0] + "_" + sdf.format(new Date()) + "." + parts[1] ;
+	@Override
+	public void deleteFile(Document doc) {
+		File file = new File(ResourceBundle.getBundle("index").getString("docs") + "\\" + doc.getField("fileName").stringValue() );
+		try {
+			boolean result = Files.deleteIfExists(file.toPath());
+			System.out.println("File is deleted: " + result);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
-		
-	}*/
-
-	
+	}
     
 }

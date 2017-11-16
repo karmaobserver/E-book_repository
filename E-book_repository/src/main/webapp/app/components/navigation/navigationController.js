@@ -9,12 +9,8 @@
 	function NavigationCtrl($scope, $rootScope, localStorageService, $state) {
 		var vm = this;
 
-		vm.username = localStorageService.get("username");
-		vm.firstName = localStorageService.get("firstName");
-		vm.lastName = localStorageService.get("lastName");
-		vm.userType = localStorageService.get("userType");
+		vm.currentUser = localStorageService.get("currentUser");
 
-		
 		vm.logout = function() {
 			console.log("LOGOUT");
 		 	localStorageService.clearAll();
@@ -23,9 +19,7 @@
 		 		$state.reload();
 		 	} else {
 		 		$state.go('home'); 
-		 	}
-		 	
-		 	         
+		 	}	 	         
         }
 
         vm.login = function() {

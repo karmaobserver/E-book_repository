@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 import makso.rs.model.Ebook;
 import makso.rs.repository.CategoryRepository;
 import makso.rs.repository.LanguageRepository;
+import makso.rs.repository.UserRepository;
 import makso.rs.udd.analyzer.SerbianAnalyzer;
 import makso.rs.udd.indexer.IndexManager;
 import makso.rs.udd.indexer.UDDIndexer;
@@ -31,6 +32,7 @@ public class InformationRetriever {
 
 	private static CategoryRepository categoryRepository;
 	private static LanguageRepository languageRepository;
+	private static UserRepository userRepository;
 	
 	private static int maxHits = 10;
 	private static final Version matchVersion = Version.LUCENE_4_9;
@@ -41,11 +43,15 @@ public class InformationRetriever {
 
 	@Autowired
 	private LanguageRepository languageRepository0;
+	
+	@Autowired
+	private UserRepository userRepository0;
 
 	@PostConstruct
 	public void initStaticRepo() {
 		categoryRepository = this.categoryRepository0;
 		languageRepository = this.languageRepository0;
+		userRepository = this.userRepository0;
 	}
 
 	public static List<Ebook> getData(Query query) {
@@ -75,10 +81,14 @@ public class InformationRetriever {
 			data.setTitle(doc.get("title"));
 			data.setAuthor(doc.get("author"));
 			data.setPublicationYear(Integer.valueOf(doc.get("publicationYear")));
-			data.setFileName(doc.get("filename"));
+			//System.out.println("Filename getDATA: " + doc.get("fileName"));
+			data.setFileName(doc.get("fileName"));
 			data.setMime(doc.get("mime"));
-			data.setCategory(categoryRepository.findCategoryByName(doc.get("cateogry")));
+			//System.out.println("Category getDATA: " + categoryRepository.findCategoryByName(doc.get("category")));
+			data.setCategory(categoryRepository.findCategoryByName(doc.get("category")));
 			data.setLanguage(languageRepository.findLanguageByName(doc.get("language")));
+			//System.out.println("Username getDATA: " + doc.get("user"));
+			data.setUsers(userRepository.findUserByUsername(doc.get("user")));
 	
 
 			String stringId = doc.get("ebookId");
@@ -123,10 +133,11 @@ public class InformationRetriever {
 				data.setTitle(doc.get("title"));
 				data.setAuthor(doc.get("author"));
 				data.setPublicationYear(Integer.valueOf(doc.get("publicationYear")));
-				data.setFileName(doc.get("filename"));
+				data.setFileName(doc.get("fileName"));
 				data.setMime(doc.get("mime"));
-				data.setCategory(categoryRepository.findCategoryByName(doc.get("cateogry")));
+				data.setCategory(categoryRepository.findCategoryByName(doc.get("category")));
 				data.setLanguage(languageRepository.findLanguageByName(doc.get("language")));
+				data.setUsers(userRepository.findUserByUsername(doc.get("user")));
 
 				String stringId = doc.get("ebookId");
 				Long longId = (stringId == null) ? 0 : Long.valueOf(stringId);

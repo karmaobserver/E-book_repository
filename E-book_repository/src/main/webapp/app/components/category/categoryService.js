@@ -21,8 +21,6 @@
             }
             return $http(req)
             		.then(function(result) {
-            			console.log("getCategories");
-            			console.log(result);
                         return result;
                     })
                     .catch(function(error) {
@@ -43,8 +41,6 @@
             }
             return $http(req)
                     .then(function(result) {
-                        console.log("addedCategory");
-                        console.log(result);
                         return result;
                     })
                     .catch(function(error) {
@@ -65,8 +61,6 @@
             }
             return $http(req)
                     .then(function(result) {
-                        console.log("deletedCategory");
-                        console.log(result);
                         return result;
                     })
                     .catch(function(error) {
@@ -88,8 +82,6 @@
             }
             return $http(req)
                     .then(function(result) {
-                        console.log("modificated category");
-                        console.log(result);
                         return result;
                     })
                     .catch(function(error) {

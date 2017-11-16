@@ -9,6 +9,9 @@
 	function SearchCtrl($scope, $rootScope, SearchService, localStorageService, CategoryService, UserService, UtilService, $state) {
 		var vm = this;
 
+		vm.showResults = false;
+		vm.showSearchSpinner = false;
+
 		vm.searchAttributes = {
 
 			fields : [
@@ -49,7 +52,6 @@
 
 		vm.occurances = ['MUST','MUST NOT','SHOULD'];
 
-		vm.showResults = false;
 
 		var searchAttributesLoad = localStorageService.get('searchAttributes');
 
@@ -61,10 +63,12 @@
 
 			console.log(vm.searchAttributes);
 
+			vm.showSearchSpinner = true;
 			SearchService.search(vm.searchAttributes)
 					 	.then(function(response) {
 							console.log('Searched ebook');							
-					        vm.ebooks = response.data;					       				     
+					        vm.ebooks = response.data;
+					        vm.showSearchSpinner = false;					       				     
 						})
 						.catch(function(response) {
 							console.log('dOSLO DO CATCH');

@@ -23,6 +23,8 @@ public  class Routes {
         "/ebookEdit",
         "/languages",
         "/ebookAdd",
+        "/ebookEdit",
+        "/getEbookData",
         "/ebookSearch",
         
         

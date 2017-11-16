@@ -23,8 +23,8 @@ INSERT INTO language (name) VALUES ('Ruthenian');
 
 INSERT INTO users (first_name, last_name, password, user_type, username, category) VALUES ('Petar', 'Petrovic', 'petar', 'administrator', 'petar', 1);
 INSERT INTO users (first_name, last_name, password, user_type, username, category) VALUES ('Ana', 'Antic', 'ana', 'administrator', 'ana', 1);
-INSERT INTO users (first_name, last_name, password, user_type, username, category) VALUES ('Marko', 'Markovic', 'marko', 'administrator', 'marko', 2);
-INSERT INTO users (first_name, last_name, password, user_type, username, category) VALUES ('Vesna', 'Vlasic', 'vesna', 'administrator', 'vesna', 3);
+INSERT INTO users (first_name, last_name, password, user_type, username, category) VALUES ('Marko', 'Markovic', 'marko', 'subscriber', 'marko', 2);
+INSERT INTO users (first_name, last_name, password, user_type, username, category) VALUES ('Vesna', 'Vlasic', 'vesna', 'administrator', 'vesna', NULL);
 
 INSERT INTO ebook (author, file_name, keywords, mime, publication_year, title, category, language, users) VALUES ('Friedrich Nietzsche', 'Nietzsche', 'Friedrich Nietzsche German philosopher good evil', NULL, 1886, 'Beyond Good and Evil', 1, 1, 1);
 INSERT INTO ebook (author, file_name, keywords, mime, publication_year, title, category, language, users) VALUES ('Friedrich Nietzsche', 'Nietzsche2', 'Friedrich Nietzsche German philosopher Zarathustra', NULL, 1883, 'Thus Spoke Zarathustra', 13, 2, 1);

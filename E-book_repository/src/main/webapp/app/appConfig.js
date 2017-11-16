@@ -126,6 +126,21 @@
                        }
                 } 
       })
+      .state('ebookEdit', {
+        url: "/ebookEdit=:ebookId",
+        views: {
+                 'content': {
+                           templateUrl: 'app/components/ebook/ebookEdit.html',
+                           controller: "EbookCtrl",
+                           controllerAs: "vm"
+                       },
+                  'navigation':{
+                           templateUrl: 'app/components/navigation/navigation.html',
+                           controller: "NavigationCtrl",
+                           controllerAs: "vm"
+                       }
+                } 
+      })
       .state('profile', {
         url: "/profile",
         views: {

@@ -10,14 +10,14 @@
 		<thead class="thead-inverse">
 		    <tr>
 		        <th>Categories Name</th>
-		        <th>Options</th>   
+		        <th ng-if="vm.currentUser.userType === 'administrator'">Options</th>   
 		    </tr>
 		</thead>
 		<tbody>
 			<tr ng-repeat="category in vm.categories">
-				<td ng-if="vm.isEditing === true && vm.categoryId == category.id"><input class="form-control" type="text" ng-model="vm.categoryName"  ng-init="vm.categoryName = category.name" ng-value="category.name"></td>
+				<td ng-if="vm.isEditing === true && vm.categoryId == category.id && vm.currentUser.userType === 'administrator'"><input class="form-control" type="text" ng-model="vm.categoryName"  ng-init="vm.categoryName = category.name" ng-value="category.name"></td>
 			    <td ng-if="vm.isEditing === false || vm.categoryId != category.id">{{category.name}}</td>
-			    <td  class="td-buttons" align="center">
+			    <td ng-if="vm.currentUser.userType === 'administrator'" class="td-buttons" align="center">
 			    	<button ng-if="vm.isEditing === false || vm.categoryId != category.id" type="button" class="btn btn-warning margin5-button" ng-click="vm.editCategory(category.id)">Edit</button>
 			    	<button ng-if="vm.isEditing === false || vm.categoryId != category.id" type="button" class="btn btn-danger" ng-click="vm.deleteCategory(category.id)">Remove</button>
 			    	<button ng-if="vm.isEditing === true && vm.categoryId == category.id" type="button" class="btn btn-success margin5-button" ng-click="vm.modiflyCategory(category.id, category.name)">Save</button>
@@ -37,4 +37,4 @@
 	</div>
 </div>
 
-<button ng-if="vm.isEditing === false" type="button" class="btn btn-Success" ng-click="vm.addCategory()">Add New Category</button>		
+<button ng-if="vm.isEditing === false && vm.currentUser.userType === 'administrator'" type="button" class="btn btn-Success" ng-click="vm.addCategory()">Add New Category</button>		

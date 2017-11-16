@@ -9,12 +9,7 @@
 	function ProfileCtrl($scope, $rootScope, UserService, localStorageService, $window, $state) {
 		var vm = this;
 
-		vm.username = localStorageService.get("username");
-		vm.firstName = localStorageService.get("firstName");
-		vm.lastName = localStorageService.get("lastName");
-		vm.userType = localStorageService.get("userType");
-		vm.userCategory = localStorageService.get("userCategory");
-		vm.password = localStorageService.get("password");  
+		vm.currentUser = localStorageService.get("currentUser"); 
 
 		vm.isEditing = false;
 		vm.hasError = false;
@@ -41,14 +36,15 @@
 		vm.modifyProfile = function() {
 			vm.isEditing = false;
 			var user = {};
-	   		user = {username: vm.username, password: vm.password, firstName: vm.firstName, lastName: vm.lastName};
+	   		user = {username: vm.currentUser.username, password: vm.currentUser.password, firstName: vm.currentUser.firstName, lastName: vm.currentUser.lastName};
 
 			UserService.modifyUser(user)
 						.then(function(response) {
 							console.log("Modificated user");
 							console.log(response.data);
-							localStorageService.set("firstName", vm.firstName);
-							localStorageService.set("lastName", vm.lastName);
+							var currentUser = {username: vm.currentUser.username, password: vm.currentUser.password, firstName: vm.currentUser.firstName, lastName: vm.currentUser.lastName,
+              					userType: vm.currentUser.userType, userCategory: vm.currentUser.userCategory, userId: vm.currentUser.id}
+							localStorageService.set("currentUser", currentUser);
 							
 						})
 						.catch(function (response) {
@@ -60,17 +56,19 @@
 			if (vm.passwordNew == vm.passwordConfirm && vm.passwordNew != "") {
 				console.log("passwords do match");
 				vm.hasError = false;
-				vm.password = vm.passwordNew;
+				vm.currentUser.password = vm.passwordNew;
 				vm.passwordNew = "";
 				vm.passwordConfirm = "";
 				var user = {};
-	   			user = {username: vm.username, password: vm.password, firstName: vm.firstName, lastName: vm.lastName};
+	   			user = {username: vm.currentUser.username, password: vm.currentUser.password, firstName: vm.currentUser.firstName, lastName: vm.currentUser.lastName};
 
 				UserService.modifyUser(user)
 							.then(function(response) {
 								console.log('Modificated password');
 								console.log(response.data);
-								localStorageService.set("password", vm.password);
+								var currentUser = {username: vm.currentUser.username, password: vm.currentUser.password, firstName: vm.currentUser.firstName, lastName: vm.currentUser.lastName,
+              					userType: vm.currentUser.userType, userCategory: vm.currentUser.userCategory, userId: vm.currentUser.id}
+								localStorageService.set("currentUser", currentUser);
 								$window.alert("Password has been changed successfully!");
 								$state.go('profile');
 							})

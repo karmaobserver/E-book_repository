@@ -11,7 +11,7 @@
 	            <label>Username:</label>
 	        </div>
 	        <div class="col-xs-10">        
-	            <p>{{vm.username}}</p>
+	            <p>{{vm.currentUser.username}}</p>
 	        </div>
 	    </div>
 	    <div class="form-group row">
@@ -19,8 +19,8 @@
 	            <label>First Name:</label>
 	        </div>
 	        <div class="col-xs-2">
-	            <input  class="form-control" ng-if="vm.isEditing === true" type="text" ng-model="vm.firstName" ng-model-options="{ updateOn: 'submit' }">
-	            <p ng-if="vm.isEditing === false">{{vm.firstName}}</p>
+	            <input  class="form-control" ng-if="vm.isEditing === true" type="text" ng-model="vm.currentUser.firstName" ng-model-options="{ updateOn: 'submit' }">
+	            <p ng-if="vm.isEditing === false">{{vm.currentUser.firstName}}</p>
 	        </div>
 	    </div>
 	    <div class="form-group row">
@@ -28,8 +28,8 @@
 	            <label>Last Name:</label>
 	        </div>
 	        <div class="col-xs-2">
-	            <input  class="form-control" ng-if="vm.isEditing === true" type="text" ng-model="vm.lastName" ng-model-options="{ updateOn: 'submit' }">
-	            <p ng-if="vm.isEditing === false">{{vm.lastName}}</p>
+	            <input  class="form-control" ng-if="vm.isEditing === true" type="text" ng-model="vm.currentUser.lastName" ng-model-options="{ updateOn: 'submit' }">
+	            <p ng-if="vm.isEditing === false">{{vm.currentUser.lastName}}</p>
 	        </div>
 	    </div>
 	    <div class="form-group row">
@@ -37,7 +37,7 @@
 	            <label>Category:</label>
 	        </div>
 	        <div class="col-xs-10">    
-	            <p>{{vm.userCategory}}</p>
+	            <p>{{vm.currentUser.userCategory}}</p>
 	        </div>
 	    </div>
 	    <div class="form-group row">
@@ -45,7 +45,7 @@
 	            <label>User Type:</label>
 	        </div>
 	        <div class="col-xs-10">        
-	            <p>{{vm.userType}}</p>
+	            <p>{{vm.currentUser.userType}}</p>
 	        </div>
 	    </div>
     </div>

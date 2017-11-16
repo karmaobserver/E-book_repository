@@ -23,18 +23,18 @@
             <li  ng-repeat="group in vm.groups"><a ng-href="#!/group?groupId={{group.id}}">{{group.name}}</a></li> 
           </ul>
         </li> -->
-        <li><a href="/profile">Profile</a></li>
+        <li ng-if="vm.currentUser.username != NULL"><a href="/profile">Profile</a></li>
         <li><a href="/categories">Categories</a></li>
         <li><a href="/ebooks">eBooks</a></li>
-        <li><a href="/users">Users</a></li>
+        <li ng-if="vm.currentUser.userType === 'administrator'"><a href="/users">Users</a></li>
         <li><a href="/ebookSearch">eBook Search</a></li>
       </ul>
       <!-- Ako bude potrebe da se uradi preko buttona -->
       <ul class="nav navbar-nav navbar-right">
-      	<li ng-if="vm.username != NULL"><a href="" >{{vm.firstName}}&nbsp{{vm.lastName}}</a></li>
-      	<li ng-if="vm.username != NULL"><a href="" >Role: &nbsp{{vm.userType}}</a></li>
-        <li ng-if="vm.username == NULL"><button class="btn btn-success navbar-btn margin10" ng-click="vm.login()">Log in</button></li>
-        <li ng-if="vm.username != NULL"><button class="btn btn-danger navbar-btn" ng-click="vm.logout()">Log out</button></li>
+      	<li ng-if="vm.currentUser.username != NULL"><a href="" >{{vm.currentUser.firstName}}&nbsp{{vm.currentUser.lastName}}</a></li>
+      	<li ng-if="vm.currentUser.username != NULL"><a href="" >Role: &nbsp{{vm.currentUser.userType}}</a></li>
+        <li ng-if="vm.currentUser.username == NULL"><button class="btn btn-success navbar-btn margin10" ng-click="vm.login()">Log in</button></li>
+        <li ng-if="vm.currentUser.username != NULL"><button class="btn btn-danger navbar-btn" ng-click="vm.logout()">Log out</button></li>
       </ul>
     </div>
   </div>

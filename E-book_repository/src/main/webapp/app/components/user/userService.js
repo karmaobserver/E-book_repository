@@ -21,8 +21,6 @@
                 }
                 return $http(req)
                 		.then(function(result) {
-                			console.log("getUsers");
-                			console.log(result);
                             return result;
                         })
                         .catch(function(error) {
@@ -42,8 +40,6 @@
                 }
                 return $http(req)
                         .then(function(result) {
-                            console.log("getUser");
-                            console.log(result);
                             return result;
                         })
                         .catch(function(error) {
@@ -64,8 +60,6 @@
                 }
                 return $http(req)
                         .then(function(result) {
-                            console.log("getUser");
-                            console.log(result);
                             return result;
                         })
                         .catch(function(error) {
@@ -86,8 +80,6 @@
             }
             return $http(req)
                     .then(function(result) {
-                        console.log("deletedUser");
-                        console.log(result);
                         return result;
                     })
                     .catch(function(error) {
@@ -108,8 +100,6 @@
                 }
                 return $http(req)
                         .then(function(result) {
-                            console.log("user updated!");
-                            console.log(result);
                             return result;
                         })
                         .catch(function(error) {
@@ -130,8 +120,6 @@
                 }
                 return $http(req)
                         .then(function(result) {
-                            console.log("user updated by admin!");
-                            console.log(result);
                             return result;
                         })
                         .catch(function(error) {
@@ -152,8 +140,6 @@
                 }
                 return $http(req)
                         .then(function(result) {
-                            console.log("Added user!");
-                            console.log(result);
                             return result;
                         })
                         .catch(function(error) {
@@ -175,8 +161,6 @@
                 }
                 return $http(req)
                         .then(function(result) {
-                            console.log("logged");
-                            console.log(result);
                             return result;
                         })
                         .catch(function(error) {

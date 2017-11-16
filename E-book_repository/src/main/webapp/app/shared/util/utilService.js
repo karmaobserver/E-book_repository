@@ -21,8 +21,6 @@
                 }
                 return $http(req)
                 		.then(function(result) {
-                			console.log("getlanguages");
-                			console.log(result);
                             return result;
                         })
                         .catch(function(error) {

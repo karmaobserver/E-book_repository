@@ -8,14 +8,13 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import makso.rs.model.Language;
 
 @Entity
-@Table(name = "EBOOK")
 public class Ebook implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue
-	@Column(name = "EBOOK_ID")
+	@javax.persistence.Id
+	@org.springframework.data.annotation.Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	@Column(name = "TITLE")
@@ -164,5 +163,14 @@ public class Ebook implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+
+	@Override
+	public String toString() {
+		return "Ebook [id=" + id + ", title=" + title + ", author=" + author + ", keywords=" + keywords
+				+ ", publicationYear=" + publicationYear + ", fileName=" + fileName + ", mime=" + mime + ", language="
+				+ language + ", users=" + users + ", category=" + category + ", highlight=" + highlight + "]";
+	}
+	
+	
 	
 }

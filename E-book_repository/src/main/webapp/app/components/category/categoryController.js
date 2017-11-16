@@ -10,8 +10,8 @@
 		var vm = this;
 
 		vm.isEditing = false;
-
 		vm.hasAddError = false;
+		vm.currentUser = localStorageService.get("currentUser");
 
 		CategoryService.getAllCategories().then(function(response) {
         	console.log(response.data);
