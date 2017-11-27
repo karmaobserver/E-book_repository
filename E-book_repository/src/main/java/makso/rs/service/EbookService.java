@@ -91,6 +91,7 @@ public class EbookService implements GenericService<Ebook>{
 		Ebook ebook = new Ebook();
 	        
 		 //check if filename already exists
+		System.out.println(ebookAddDto.getFileName());
 	    Query q = new TermQuery(new Term("fileName", ebookAddDto.getFileName()+".pdf"));
 		List<Document> doc = ResultRetriever.getResults(q);
 	    if (!doc.isEmpty()) {
@@ -126,6 +127,16 @@ public class EbookService implements GenericService<Ebook>{
 	
 	public Ebook updateEbookWithoutFile(Ebook oldEbook, EbookDto ebookDto) {
 		
+		String newFileName = ebookDto.getFileName()+".pdf";
+		 //check if filename already exists
+		if (!newFileName.equals(oldEbook.getFileName())) {
+		    Query qq = new TermQuery(new Term("fileName", ebookDto.getFileName()+".pdf"));
+			List<Document> docc = ResultRetriever.getResults(qq);
+		    if (!docc.isEmpty()) {
+		        System.out.println("A Filename with name " + ebookDto.getFileName() + " already exist");
+		        return null;
+		    }
+		}
 		
 		Query q = new TermQuery(new Term("ebookId", oldEbook.getId().toString()));
 		Document doc = ResultRetriever.getResults(q).get(0);
@@ -154,9 +165,7 @@ public class EbookService implements GenericService<Ebook>{
         
         List<IndexableField> fields = generateFields(newEbook);
 		IndexManager.getIndexer().updateDocument(doc,fields.stream().toArray(IndexableField[]::new));
-	
-		System.out.println("HEJ");
-		
+
         return newEbook;
 	}
 	
@@ -243,6 +252,9 @@ public class EbookService implements GenericService<Ebook>{
 	public Ebook updateEbookWithFile(EbookDto ebookDto, MultipartFile file) {
 		
 		Ebook ebook = new Ebook();
+		
+		System.out.println("IME FAJLA:");
+		System.out.println(ebookDto.getFileName());
         
 		 //check if filename already exists
 	    Query q = new TermQuery(new Term("fileName", ebookDto.getFileName()+".pdf"));
@@ -282,13 +294,6 @@ public class EbookService implements GenericService<Ebook>{
 	    Ebook ebook = EbookPDFHandler.createEbookFromPDF(file);
 	    return ebook;
 	}
-	
-	//ne koristim vise za sad
-	public Ebook findEbookByFileName(String fileName) {
-		Ebook ebook = new Ebook();
-		ebook = ebookRepository.findEbookByFileName(fileName);
-		return ebook;
-	}
 
 	@Override
 	public void deleteById(long ebookId) {		
@@ -308,5 +313,4 @@ public class EbookService implements GenericService<Ebook>{
 		
 		storageService.deleteFile(doc.get(0));
 	}
-
 }

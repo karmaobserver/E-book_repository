@@ -4,6 +4,7 @@ public class CategoryDto {
 	
 	private long categoryId;
 	private String name;
+	
 	public long getCategoryId() {
 		return categoryId;
 	}

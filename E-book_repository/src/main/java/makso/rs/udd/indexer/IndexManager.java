@@ -33,7 +33,6 @@ public class IndexManager {
 			indexDir = new SimpleFSDirectory(indexDirPath);
 			DirectoryReader reader = DirectoryReader.open(indexDir);
 		} catch (IOException e) {
-			System.out.println("USAO ");
 			getIndexer();
 			// TODO Auto-generated catch block
 			e.printStackTrace();

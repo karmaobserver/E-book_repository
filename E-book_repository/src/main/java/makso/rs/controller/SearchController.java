@@ -26,22 +26,9 @@ private static Log4JLogger logger = new Log4JLogger(SearchController.class.getNa
 	@Autowired
 	private SearchService searchService;
 	
-	/*@PostMapping
-	public List<Ebook> search(@RequestBody SearchDto searchDto){
-		
-		logger.info(searchDto);
-		
-		return searchService.search(searchDto);
-		
-		
-	}*/
-	
 	@RequestMapping(value = "/search", method = RequestMethod.POST)
-    public ResponseEntity<List<Ebook>> searchEbook(@RequestBody SearchDto searchDto) {
-        System.out.println("Searching Ebooks with " + searchDto);
-        
-        logger.info(searchDto);
-        
+    public ResponseEntity<List<Ebook>> searchEbook(@RequestBody SearchDto searchDto) { 
+        logger.info(searchDto);       
         return new ResponseEntity<List<Ebook>>(searchService.search(searchDto), HttpStatus.OK);
     }
 

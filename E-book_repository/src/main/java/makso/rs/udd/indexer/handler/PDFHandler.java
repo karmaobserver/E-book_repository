@@ -192,13 +192,23 @@ public class PDFHandler extends DocumentHandler {
 		// TODO Auto-generated method stub
 		Document doc = getDocument(file);
 		
+		System.out.println("pre brisanja polja: " + doc.getValues("keyword").length);
+		System.out.println("pre brisanja polja get: " + doc.get("keyword"));
+		
 		doc.removeField("author");
 		doc.removeField("title");
-		doc.removeField("keyword");
+		//doc.removeField("keyword");
+		doc.removeFields("keyword");
 		
+		System.out.println("Posle brisanja polja: " + doc.getValues("keyword").length);
+		System.out.println("Posle brisanja polja get: " + doc.get("keyword"));
+		
+		System.out.println("Get document keywords: " + ebook.getKeywords());
 		String[] kws = ebook.getKeywords().trim().split(" ");
+		System.out.println("Duzina niza stringa: " + kws.length);
 		for(String kw : kws){
 			if(!kw.trim().equals("")){
+				System.out.println("Dodajem keywordd: " + kw);
 				doc.add(new TextField("keyword", kw, Store.YES));
 			}
 		}

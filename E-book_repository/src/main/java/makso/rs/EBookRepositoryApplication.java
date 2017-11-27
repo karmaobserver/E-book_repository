@@ -37,7 +37,7 @@ public class EBookRepositoryApplication extends SpringBootServletInitializer{
 			DirectoryReader reader = DirectoryReader.open(indexDir);
 		} catch (IOException e) {
 			IndexManager.getIndexer();
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		
 	}

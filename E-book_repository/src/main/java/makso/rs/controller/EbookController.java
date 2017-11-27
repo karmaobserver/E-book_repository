@@ -7,15 +7,9 @@ import java.io.OutputStream;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.lucene.document.Document;
-import org.apache.lucene.index.Term;
-import org.apache.lucene.search.MatchAllDocsQuery;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.TermQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,28 +20,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javassist.NotFoundException;
-import makso.rs.dto.CategoryDto;
 import makso.rs.dto.EbookAddDto;
 import makso.rs.dto.EbookDto;
-import makso.rs.dto.EbookViewModel;
-import makso.rs.dto.UserAdminDto;
-import makso.rs.model.Category;
 import makso.rs.model.Ebook;
-import makso.rs.model.Language;
-import makso.rs.model.User;
-import makso.rs.service.CategoryService;
 import makso.rs.service.EbookService;
-import makso.rs.service.LanguageService;
-import makso.rs.service.UserService;
-import makso.rs.udd.indexer.IndexManager;
-import makso.rs.udd.indexer.UDDIndexer;
-import makso.rs.udd.searcher.InformationRetriever;
-import makso.rs.udd.searcher.ResultRetriever;
-import makso.rs.util.EbookPDFHandler;
-import makso.rs.util.StorageService;
 
 @RestController
 @RequestMapping("/api")
@@ -55,20 +33,8 @@ public class EbookController {
 	
 	@Autowired
 	EbookService ebookService;
-	
-	@Autowired
-	UserService userService;
-	
-	@Autowired
-	LanguageService languageService;
-	
-	@Autowired
-	CategoryService categoryService;
-	
-	@Autowired
-	StorageService storageService;
-	
-	private static final int BUFFER_SIZE = 4096;
+			
+	private static final int BUFFER_SIZE = 4*1024;
 	
 	//-------------------List all ebooks--------------------------------------------------------
 	
@@ -96,26 +62,23 @@ public class EbookController {
         return new ResponseEntity<Ebook>(ebook, HttpStatus.OK);
     }
 	
-	
 	//-------------------Edit a Ebook--------------------------------------------------------
 	
 	@RequestMapping(value = "/ebookEdit", method = RequestMethod.POST)
-	public ResponseEntity<Ebook> editEbook(@RequestPart("ebook") EbookDto ebookDto, @RequestPart(name="file",required=false) MultipartFile file) {
-	    System.out.println("Creating Ebook " + ebookDto.getTitle());
-	    //System.out.println("Creating Ebook " + file.getOriginalFilename());
-	    System.out.println("Creating Ebook edited filename" + ebookDto.getFileName());
-	    System.out.println("Creating Ebook " +   ebookDto);
-	    
+	public ResponseEntity<Ebook> editEbook(@RequestPart("ebook") EbookDto ebookDto, @RequestPart(name="file",required=false) MultipartFile file) {	    
 	    if(file==null){
 			Ebook ebookToUpdate = ebookService.findById(ebookDto.getEbookId());
 			Ebook ebook = ebookService.updateEbookWithoutFile(ebookToUpdate, ebookDto);
+			if (ebook == null) {
+		    	//If file name already exists
+		    	return new ResponseEntity<>(HttpStatus.CONFLICT);
+		    }
 			System.out.println(ebook.getAuthor() + " and " + ebook.getTitle());
 			return new ResponseEntity<Ebook>(ebook, HttpStatus.CREATED);
 		}else{
 			ebookService.deleteById(ebookDto.getEbookId());
 			Ebook ebook = ebookService.updateEbookWithFile(ebookDto, file);
 			return new ResponseEntity<Ebook>(ebook, HttpStatus.CREATED);
-			
 		}               
 	}
        
@@ -131,18 +94,13 @@ public class EbookController {
     //-------------------Add a Ebook--------------------------------------------------------
     
 	@RequestMapping(value = "/ebookAdd", method = RequestMethod.POST)
-	public ResponseEntity<Ebook> addEbook(@RequestPart("ebook") EbookAddDto ebookAddDto, @RequestPart("file") MultipartFile file) {
-	    System.out.println("Creating Ebook " + ebookAddDto.getTitle());
-	    System.out.println("Creating Ebook " + file.getOriginalFilename());
-	    System.out.println("Creating Ebook edited filename" + ebookAddDto.getFileName());
-	    System.out.println("Creating Ebook " +   ebookAddDto);
-	    
+	public ResponseEntity<Ebook> addEbook(@RequestPart("ebook") EbookAddDto ebookAddDto, @RequestPart("file") MultipartFile file) {	    
 	    Ebook ebook = ebookService.addEbook(ebookAddDto, file);
 	    if (ebook == null) {
 	    	//If file name already exists
 	    	return new ResponseEntity<>(HttpStatus.CONFLICT);
-	    }	                 
-	    return new ResponseEntity<Ebook>(ebook, HttpStatus.CREATED);
+	    }   
+	   return new ResponseEntity<Ebook>(ebook, HttpStatus.CREATED);
 	}
 	
 	//-------------------Upload a Ebook--------------------------------------------------------
@@ -155,23 +113,25 @@ public class EbookController {
 	
 	//-------------------Download a Ebook--------------------------------------------------------
 	
-	@RequestMapping(value = "/downloadEbook", method = RequestMethod.POST)
-	public void downloadEbook(HttpServletRequest request, HttpServletResponse response, @RequestBody String fileName) throws IOException {
-		System.out.println("Download filename: " + fileName);
-		ServletContext context = request.getServletContext();
+	@RequestMapping(value = "/downloadEbook/{fileName}", method = RequestMethod.GET)
+	public void downloadEbook(HttpServletRequest request, HttpServletResponse response, @PathVariable("fileName") String fileName) throws IOException {
+		System.out.println("Download filename: " + fileName);	
+		if(!fileName.endsWith(".pdf")){
+			fileName+=".pdf";
+        }
+		
 		String filePath = ResourceBundle.getBundle("index").getString("docs") + File.separator + fileName;
 		File downloadFile = new File(filePath);
-        FileInputStream inputStream = new FileInputStream(downloadFile);   
-        String mimeType = context.getMimeType(filePath);
-        if (mimeType == null) {
-            mimeType = "application/octet-stream";
-        }
-        response.setContentType(mimeType);
-        response.setContentLength((int) downloadFile.length());
-        String headerKey = "Content-Disposition";
-        String headerValue = String.format("attachment; filename=\"%s\"", downloadFile.getName());
-        response.setHeader(headerKey, headerValue);
+		System.out.println(downloadFile.getName());
+        FileInputStream inputStream = new FileInputStream(downloadFile);
+        
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/pdf");    
+		response.addHeader("Content-Disposition", "attachment; filename=" + downloadFile.getName());
+		response.setContentLength((int) downloadFile.length());
+		       
         OutputStream outStream = response.getOutputStream();
+        
         byte[] buffer = new byte[BUFFER_SIZE];
         int bytesRead = -1;
 
@@ -180,8 +140,6 @@ public class EbookController {
         }
  
         inputStream.close();
-        outStream.close();
-		
-	}
-
+        outStream.close();	
+	}	
 }

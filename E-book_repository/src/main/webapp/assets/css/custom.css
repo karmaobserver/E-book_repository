@@ -30,6 +30,11 @@
     background-color: orange;
 }
 
+.error-form {
+     color: red;
+     font-style: italic;
+}
+
 
 body {
 	background-image: url(../img/old.jpg);
@@ -83,6 +88,10 @@ p {
 
 .margin5-button {
     margin-right: 5px;
+}
+
+.margin5-bottom-button {
+    margin-bottom: : 5px;
 }
 
 label {

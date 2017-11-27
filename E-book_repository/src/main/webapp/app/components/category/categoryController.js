@@ -11,6 +11,7 @@
 
 		vm.isEditing = false;
 		vm.hasAddError = false;
+		vm.submitted = false;
 		vm.currentUser = localStorageService.get("currentUser");
 
 		CategoryService.getAllCategories().then(function(response) {
@@ -84,28 +85,30 @@
 		}
 
 		vm.addNewCategory = function() {
+			vm.submitted = true;
 
-			if (!vm.categoryNewName) {	//if string is empty
-				console.log("prazno ime");
-				vm.hasAddError = true;
-				vm.error = "Category need to have name!";
-			} else {
-				CategoryService.addNewCategory(vm.categoryNewName)
-						.then(function(response) {
+			if (vm.addNewCategoryForm.$invalid) {
+				return;
+			}
+
+			CategoryService.addNewCategory(vm.categoryNewName)
+					.then(function(response) {
+						if (response.status == 409) {
+				   				vm.hasAddError = true;
+				   				vm.error = "Category with that name already exists!";
+				   		} else {
 							console.log('Added new category');
 							console.log(response.data);
 							$state.go('categories');
-						})
-						.catch(function (response) {
-							console.log('dOSLO DO CATCH');
-						});
-
-			}
-			
+						}
+					})
+					.catch(function (response) {
+						console.log('dOSLO DO CATCH');
+					});	
 		}
 
-		vm.closeEditError = function() {
-			vm.hasEditError = false;
+		vm.closeAddAlert = function() {
+			vm.hasAddError = false;
 		}    
 		 	
 	}

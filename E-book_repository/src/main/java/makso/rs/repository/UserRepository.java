@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import makso.rs.model.Ebook;
 import makso.rs.model.User;
 
 @Repository
@@ -18,5 +19,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	 
 	 @Query("SELECT user FROM User user WHERE user.password = :passwordLooking") 
 	 public User passwordExist(@Param("passwordLooking") String passwordLooking);
+	 
+	 @Query("SELECT user FROM User user WHERE user.category.id = :categoryId") 
+	 public List<User> findUsersByCategoryId(@Param("categoryId") long categoryId);
 
 }

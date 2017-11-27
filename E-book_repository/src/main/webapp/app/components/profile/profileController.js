@@ -14,7 +14,7 @@
 		vm.isEditing = false;
 		vm.hasError = false;
 		vm.passwordNew = "";
-		 vm.passwordConfirm = "";
+		vm.passwordConfirm = "";
 
 		vm.closeEditError = function () {
 		    vm.hasError = false;
@@ -29,11 +29,19 @@
 			vm.hasError = false;		
 		};
 
+		vm.passwordChangeCancle = function() {
+			vm.hasError = false;
+			$state.go('profile');		
+		};
+
 		vm.passwordChange = function() {
 			$state.go('passwordChange');
 		}
 
 		vm.modifyProfile = function() {
+			if (vm.modifyProfileForm.$invalid) {
+				return;
+			}
 			vm.isEditing = false;
 			var user = {};
 	   		user = {username: vm.currentUser.username, password: vm.currentUser.password, firstName: vm.currentUser.firstName, lastName: vm.currentUser.lastName};
@@ -43,7 +51,7 @@
 							console.log("Modificated user");
 							console.log(response.data);
 							var currentUser = {username: vm.currentUser.username, password: vm.currentUser.password, firstName: vm.currentUser.firstName, lastName: vm.currentUser.lastName,
-              					userType: vm.currentUser.userType, userCategory: vm.currentUser.userCategory, userId: vm.currentUser.id}
+              					userType: vm.currentUser.userType, userCategory: vm.currentUser.userCategory, userId: vm.currentUser.userId}
 							localStorageService.set("currentUser", currentUser);
 							
 						})

@@ -14,17 +14,6 @@ import makso.rs.model.Ebook;
 
 public interface StorageService {
 
- /*   void init();
-
-
-    Stream<Path> loadAll();
-
-    Path load(String filename);
-
-    Resource loadAsResource(String filename);
-
-    void deleteAll();*/
-	
 	void init();
 
 	void store(MultipartFile file, Ebook ebook);

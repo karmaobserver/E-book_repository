@@ -5,8 +5,8 @@
 		.module('ebookApp')
 		.controller('EbookCtrl', EbookCtrl);
 
-	EbookCtrl.$inject = ['$scope', '$rootScope', 'EbookService', 'localStorageService', 'CategoryService', 'UserService', 'UtilService', '$state' ];
-	function EbookCtrl($scope, $rootScope, EbookService, localStorageService, CategoryService, UserService, UtilService, $state) {
+	EbookCtrl.$inject = ['$scope', '$rootScope', 'EbookService', 'localStorageService', 'CategoryService', 'UserService', 'UtilService', '$state', 'FileSaver', 'Blob'];
+	function EbookCtrl($scope, $rootScope, EbookService, localStorageService, CategoryService, UserService, UtilService, $state, FileSaver, Blob) {
 		var vm = this;
 
 		vm.hasAddError = false;
@@ -15,6 +15,7 @@
 		vm.showUploadSpinner = false;
 		var failUpload = false;
 		vm.currentUser = localStorageService.get("currentUser");
+		vm.notPDF = false;
 
 		getAllEbooks();
 		getAllUsers();
@@ -93,66 +94,60 @@
 		};
 
 		vm.editEbookSave = function() {
-			if (!vm.ebook.title) {	//if string is empty
-				vm.hasAddError = true;
-				vm.error = "Title can not be empty!";
-			} else if (!vm.ebook.fileName) {	//if string is empty
-				vm.hasAddError = true;
-				vm.error = "File name can not be empty!";
-			} else {
-				var newEbook = {};
-				newEbook = {ebookId: vm.ebookId, title: vm.ebook.title, author: vm.ebook.author,  keywords: vm.ebook.keywords,  publicationYear: vm.ebook.publicationYear, categoryId: vm.ebook.category, 
-		   			languageId: vm.ebook.language, userId: vm.currentUser.userId, fileName: vm.ebook.fileName, mime: vm.ebook.mime};
 
-	   			if (vm.file == null) {
-	   				console.log("VM FILE JE NULL")
-	   				var formData = new FormData();
-					formData.append("file", null);
-					vm.file = formData;
-	   			}
-
-	   			if (!failUpload) {
-	   				console.log("Not fail upload!!")
-					vm.file.append('ebook', new Blob([JSON.stringify(newEbook)], {
-						type: "application/json"
-					}));
-				} else {
-					console.log("FAIL upload")
-					vm.file.delete('ebook');
-					vm.file.append('ebook', new Blob([JSON.stringify(newEbook)], {
-						type: "application/json"
-					}));
-				}
-
-				console.log("Fajl je");
-				console.log(vm.file);
-				vm.showUploadSpinner = true;
-				EbookService.editEbook(vm.file)
-						.then(function(response) {
-							vm.showUploadSpinner = false;
-							if (response.status == 409) {
-					   				vm.hasAddError = true;
-					   				vm.error = "File with that name already exists!";
-					   				failUpload = true;
-
-					   		} else {
-					   			vm.hasAddSuccess = true;
-					   			vm.success = "Successfully added ebook to repository!"
-					   			vm.file = null;
-								console.log('Added new ebook');
-								console.log(response.data);
-								//$state.go('ebooks');
-							}
-						})
-						.catch(function (response) {
-							console.log('dOSLO DO CATCH');
-						});
-
-
+			if (vm.editForm.$invalid) {
+				return;
 			}
+
+			var newEbook = {};
+			newEbook = {ebookId: vm.ebookId, title: vm.ebook.title, author: vm.ebook.author,  keywords: vm.ebook.keywords,  publicationYear: vm.ebook.publicationYear, categoryId: vm.ebook.category, 
+	   			languageId: vm.ebook.language, userId: vm.currentUser.userId, fileName: vm.ebook.fileName, mime: vm.ebook.mime};
+
+   			if (vm.file == null) {
+   				console.log("VM FILE JE NULL")
+   				var formData = new FormData();
+				formData.append("file", null);
+				vm.file = formData;
+   			}
+
+   			if (!failUpload) {
+   				console.log("Not fail upload!!")
+				vm.file.append('ebook', new Blob([JSON.stringify(newEbook)], {
+					type: "application/json"
+				}));
+			} else {
+				console.log("FAIL upload")
+				vm.file.delete('ebook');
+				vm.file.append('ebook', new Blob([JSON.stringify(newEbook)], {
+					type: "application/json"
+				}));
+			}
+
+			console.log("Fajl je");
+			console.log(vm.file);
+			vm.showUploadSpinner = true;
+			EbookService.editEbook(vm.file)
+					.then(function(response) {
+						vm.showUploadSpinner = false;
+						if (response.status == 409) {
+				   				vm.hasAddError = true;
+				   				vm.error = "File with that name already exists!";
+				   				failUpload = true;
+
+				   		} else {
+				   			vm.hasAddSuccess = true;
+				   			vm.success = "Ebook successfully edited!"
+				   			vm.file = null;
+							//$state.go('ebooks');
+						}
+					})
+					.catch(function (response) {
+						console.log('dOSLO DO CATCH');
+					});
 		}
 
 		function editEbookPrepare(ebookId) {
+
 
 			EbookService.getEbookDataById(ebookId)
 						.then(function(response) {
@@ -184,6 +179,25 @@
 		
 		vm.upload = function(files) {
 			console.log(files[0]);
+			vm.notPDF = false;
+
+			//Check if any file is chosen
+			if (files[0]) {
+				console.log("Nije null");
+				//In case it is not pdf file, show error
+				if (!files[0].name.endsWith(".pdf")) {
+					console.log("Ne zavrsava se sa pdf")
+					vm.notPDF = true;
+					$scope.$apply();
+					console.log(vm.notPDF);
+					return;
+
+				}
+			} else {
+				console.log("File not chosen");
+				vm.notPDF = true;
+				return;
+			}
 
 			var formData = new FormData();
 			formData.append("file", files[0]);
@@ -217,62 +231,59 @@
 
 		vm.addNewEbook = function() {
 
-			if (!vm.ebook.title) {	//if string is empty
-				vm.hasAddError = true;
-				vm.error = "Title can not be empty!";
-			} else if (!vm.ebook.fileName) {	//if string is empty
-				vm.hasAddError = true;
-				vm.error = "File name can not be empty!";
-			} else {
-
-				console.log(vm.ebook.fileName);
-				var newEbook = {};
-				newEbook = {title: vm.ebook.title, author: vm.ebook.author,  keywords: vm.ebook.keywords,  publicationYear: vm.ebook.publicationYear, categoryId: vm.ebook.category, 
-		   			languageId: vm.ebook.language, userId: vm.currentUser.userId, fileName: vm.ebook.fileName, mime: vm.ebook.mime};
-
-		   		console.log("KNJIGA");
-		   		console.log(newEbook);
-
-		   		if (!failUpload) {
-					vm.file.append('ebook', new Blob([JSON.stringify(newEbook)], {
-						type: "application/json"
-					}));
-				} else {
-					vm.file.delete('ebook');
-					vm.file.append('ebook', new Blob([JSON.stringify(newEbook)], {
-						type: "application/json"
-					}));
-				}
-
-				vm.showUploadSpinner = true;
-				EbookService.addNewEbook(vm.file)
-						.then(function(response) {
-							vm.showUploadSpinner = false;
-							if (response.status == 409) {
-					   				vm.hasAddError = true;
-					   				vm.error = "File with that name already exists!";
-					   				failUpload = true;
-
-					   		} else {
-					   			vm.hasAddSuccess = true;
-					   			vm.success = "Successfully added ebook to repository!"
-					   			vm.file = null;
-								console.log('Added new ebook');
-								console.log(response.data);
-								//$state.go('ebooks');
-							}
-						})
-						.catch(function (response) {
-							console.log('dOSLO DO CATCH');
-						});
+			if (vm.addForm.$invalid || vm.notPDF) {
+				return;
 			}
 		
+			console.log(vm.ebook.fileName);
+			var newEbook = {};
+			newEbook = {title: vm.ebook.title, author: vm.ebook.author,  keywords: vm.ebook.keywords,  publicationYear: vm.ebook.publicationYear, categoryId: vm.ebook.category, 
+	   			languageId: vm.ebook.language, userId: vm.currentUser.userId, fileName: vm.ebook.fileName, mime: vm.ebook.mime};
+
+	   		console.log("KNJIGA");
+	   		console.log(newEbook);
+
+	   		if (!failUpload) {
+				vm.file.append('ebook', new Blob([JSON.stringify(newEbook)], {
+					type: "application/json"
+				}));
+			} else {
+				vm.file.delete('ebook');
+				vm.file.append('ebook', new Blob([JSON.stringify(newEbook)], {
+					type: "application/json"
+				}));
+			}
+
+			vm.showUploadSpinner = true;
+			EbookService.addNewEbook(vm.file)
+					.then(function(response) {
+						vm.showUploadSpinner = false;
+						if (response.status == 409) {
+				   				vm.hasAddError = true;
+				   				vm.error = "File with that name already exists!";
+				   				failUpload = true;
+
+				   		} else {
+				   			vm.hasAddSuccess = true;
+				   			vm.success = "Ebook successfully added to repository!"
+				   			vm.hasAddError = false;				   			
+				   			vm.file = null;
+							console.log('Added new ebook');
+							console.log(response.data);
+							//$state.go('ebooks');
+						}
+					})
+					.catch(function (response) {
+						console.log('dOSLO DO CATCH');
+					});
 		}
 
 		vm.closeAddAlert = function() {
 			vm.hasAddError = false;
 			vm.hasAddSuccess = false;
 		}
+
+		//--------------------------------------------------------Download part-------------------------------------------------------
 
 		vm.register = function() {
 			//to login state, since we do not need to have register by project specification! (otherwise it should be redirected to register)
@@ -283,14 +294,18 @@
 
 			EbookService.downloadEbook(fileName)
 						.then(function(response) {
-							console.log('Downloaded ebook');
-							console.log(response.data);	
+							console.log('Downloaded ebook');	
+							console.log(response);	
+
+							var blob = response.data; 
+    						FileSaver.saveAs(blob, fileName);
+
 						})
 						.catch(function (response) {
 							console.log('dOSLO DO CATCH');
+							console.log(response);
 						});
 		}
-
-		 	
+	 	
 	}
 })();

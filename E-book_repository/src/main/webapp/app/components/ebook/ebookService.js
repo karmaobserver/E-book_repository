@@ -159,17 +159,13 @@
 
             downloadEbook: function(fileName) {
             var req = {
-                method: 'POST',
-                url: 'api/downloadEbook',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                data: fileName
+                method: 'GET',
+                url: 'api/downloadEbook/' + fileName,
+                responseType: 'blob'
+                //responseType: "arraybuffer",                        
             }
             return $http(req)
                     .then(function(result) {
-                        console.log("Ebook downloaded");
-                        console.log(result);
                         return result;
                     })
                     .catch(function(error) {

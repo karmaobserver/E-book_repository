@@ -25,9 +25,5 @@ INSERT INTO users (first_name, last_name, password, user_type, username, categor
 INSERT INTO users (first_name, last_name, password, user_type, username, category) VALUES ('Ana', 'Antic', 'ana', 'administrator', 'ana', 1);
 INSERT INTO users (first_name, last_name, password, user_type, username, category) VALUES ('Marko', 'Markovic', 'marko', 'subscriber', 'marko', 2);
 INSERT INTO users (first_name, last_name, password, user_type, username, category) VALUES ('Vesna', 'Vlasic', 'vesna', 'administrator', 'vesna', NULL);
+INSERT INTO users (first_name, last_name, password, user_type, username, category) VALUES ('Aca', 'Artic', 'aca', 'subscriber', 'aca', NULL);
 
-INSERT INTO ebook (author, file_name, keywords, mime, publication_year, title, category, language, users) VALUES ('Friedrich Nietzsche', 'Nietzsche', 'Friedrich Nietzsche German philosopher good evil', NULL, 1886, 'Beyond Good and Evil', 1, 1, 1);
-INSERT INTO ebook (author, file_name, keywords, mime, publication_year, title, category, language, users) VALUES ('Friedrich Nietzsche', 'Nietzsche2', 'Friedrich Nietzsche German philosopher Zarathustra', NULL, 1883, 'Thus Spoke Zarathustra', 13, 2, 1);
-INSERT INTO ebook (author, file_name, keywords, mime, publication_year, title, category, language, users) VALUES ('Plato', 'Plato', 'Plato the republic', NULL, 1938, 'The Republic', 1, 1, 1);
-INSERT INTO ebook (author, file_name, keywords, mime, publication_year, title, category, language, users) VALUES ('Charles Dickens', 'Charles', 'English writer and social critic Oliver Twist', NULL, 1837, 'The Adventures of Oliver Twist', 14, 1, 2);
-INSERT INTO ebook (author, file_name, keywords, mime, publication_year, title, category, language, users) VALUES ('Charles Dickens', 'Charles2', 'English writer and social critic David Copperfield', NULL, 1849, 'David Copperfield', 14, 1, 1);

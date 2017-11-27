@@ -5,6 +5,12 @@
 	</div>
 </div>
 
+<div ng-show="vm.hasEditError" class="row">
+	<div class="col-xs-12">
+		<div uib-alert ng-class="'alert-danger'" close="vm.closeAddAlert()"> {{vm.error}}</div>
+	</div>
+</div>
+
 <div class="table-responsive">
 	<table class="table table-hover table-bordered">
 		<thead class="thead-inverse">
@@ -57,11 +63,7 @@
 		</tbody>
 	</table>
 </div>
-<div ng-show="vm.hasEditError" class="row">
-	<div class="col-xs-4">
-		<div uib-alert ng-class="'alert-danger'" close="vm.closeAddAlert()"> {{vm.error}}</div>
-	</div>
-</div>
+
 
 <button ng-if="vm.isEditing === false" type="button" class="btn btn-Success" ng-click="vm.addUser()">Add New User</button>	
 

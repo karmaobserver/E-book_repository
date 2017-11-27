@@ -100,8 +100,9 @@
 			        <th>Category</th>
 			        <th>Language</th>
 			        <th>File name</th>
-			        <th>User added</th>
-			        <th>Options</th>   
+			        <th>Added by</th>
+                    <th>Summery</th>
+			        <th>Options</th>                   
 			    </tr>
 			</thead>
 			<tbody>
@@ -114,9 +115,16 @@
 				    <td>{{ebook.language.name}}</td>	 
 				    <td>{{ebook.fileName}}</td> 
 				    <td>{{ebook.users.username}}</td>
+                    <td><p class="text-left" style="font-style: italic;">
+                        <div style="font-style: italic;" ng-bind-html="ebook.highlight"></div>
+                    </p></td>
 				    <td class="td-buttons" align="center">
-				    	<button type="button" class="btn btn-success margin5-button" ng-click="vm.downloadEbook(ebook.id)">Download</button>			    	
+                        <button ng-if="vm.currentUser.userType === 'administrator' || (vm.currentUser.userType === 'subscriber' && vm.currentUser.userCategory === NULL) || (vm.currentUser.userType === 'subscriber' && vm.currentUser.userCategory === ebook.category.name)" class="btn btn-success margin5-bottom-button" type="button" ng-click="vm.downloadEbook(ebook.fileName)">Download</button>
+				    	<button ng-if="vm.currentUser.username == NULL" type="button" class="btn btn-warning margin5-button" ng-click="vm.register()">Register To Download</button>    			    	
 				    </td>
+                    
+                    
+
 				</tr>
 			</tbody>
 		</table>

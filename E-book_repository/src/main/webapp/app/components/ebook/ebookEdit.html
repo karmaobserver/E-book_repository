@@ -1,8 +1,14 @@
-<form id="editEbook" ng-submit="vm.editEbookSave()" name="editEbookForm">
+<form id="editEbook" ng-submit="vm.editEbookSave()" name="vm.editForm" novalidate>
 	<div class="form-group row">
 	 	<div class="col-xs-10">
     		<p class="h3 bg-success" align="center">Editing an ebook</p>
     	</div>
+    </div>
+
+    <div ng-if="vm.hasAddError" class="row">
+        <div class="col-xs-4">
+            <div uib-alert ng-class="'alert-danger'" close="vm.closeAddAlert()"> {{vm.error}}</div>
+        </div>
     </div>
     <!-- <span us-spinner="{radius:30, width:8, length: 16, color:'GREEN'}" spinner-on="vm.showUploadSpinner" style="position: relative"></span> -->
     <div class="form-group row" us-spinner="{radius:30, width:8, length: 16, color:'#f4a142'}" spinner-on="vm.showUploadSpinner" style="position: relative">
@@ -10,7 +16,8 @@
             <label for="file">File:</label>
         </div>
         <div class="col-xs-4">
-            <input class="form-control" ng-model-options="{updateOn: 'default blur', debounce: { 'default': 0, 'blur': 0}}" type="file" ng-model="vm.file" onchange="angular.element(this).scope().vm.upload(this.files)" id="file" name="file" placeholder="File"/>
+            <input class="form-control"  type="file" ng-model="vm.file" onchange="angular.element(this).scope().vm.upload(this.files)" id="file" name="file" placeholder="File">
+            <p class="error-form" ng-if="vm.notPDF">Only pdf file can be uploaded.</p>
         </div> 
     </div>
     <!-- <p style="color: yellow">{{vm.ebook.mime}}, {{vm.nesto}}</p> -->
@@ -20,7 +27,8 @@
                 <label>Title:</label>
             </div>
             <div class="col-xs-4">        
-                <input class="form-control" type="text" ng-model="vm.ebook.title">
+                <input class="form-control" name="title" id="title" type="text" ng-model="vm.ebook.title" required>
+                <p class="error-form" ng-show="vm.editForm.title.$touched && vm.editForm.title.$error.required">Title can not be empty.</p>
             </div>
         </div>
         <div class="form-group row">
@@ -28,7 +36,7 @@
                 <label>Author:</label>
             </div>
             <div class="col-xs-4">        
-                <input class="form-control" type="text" ng-model="vm.ebook.author">
+                <input class="form-control" name="author" id="author" type="text" ng-model="vm.ebook.author">
             </div>
         </div>
         <div class="form-group row">
@@ -36,14 +44,14 @@
                 <label>Keywords:</label>
             </div>
             <div class="col-xs-8">        
-                <input class="form-control" type="text" ng-model="vm.ebook.keywords">
+                <input class="form-control" name="keywords" id="keywords" type="text" ng-model="vm.ebook.keywords">
             </div>
         </div>
         <div class="form-group row">
             <div class="col-xs-2">
                 <label>Publication Year:</label>
             </div>
-            <div class="col-xs-1">        
+            <div class="col-xs-2">        
                 <input class="form-control" type="number" ng-model="vm.ebook.publicationYear">
             </div>
         </div>
@@ -52,9 +60,10 @@
                 <label>Category:</label>
             </div>
             <div class="col-xs-2">        
-                <select class="form-control" ng-model="vm.ebook.category" ng-options="category.id as category.name for category in vm.categories">   
+                <select class="form-control" name="category" id="category" ng-model="vm.ebook.category" ng-options="category.id as category.name for category in vm.categories" required>   
                     <option value="">--Select Category--</option>              
                 </select>
+                <p class="error-form" ng-show="vm.editForm.category.$touched && vm.editForm.category.$error.required">Category need to be selected.</p>
             </div>
         </div>
         <div class="form-group row">
@@ -62,9 +71,10 @@
                 <label>Language:</label>
             </div>
             <div class="col-xs-2">        
-                <select class="form-control" ng-model="vm.ebook.language" ng-options="language.id as language.name for language in vm.languages">
+                <select class="form-control" name="language" id="language" ng-model="vm.ebook.language" ng-options="language.id as language.name for language in vm.languages" required>
                     <option value="">--Select Language--</option>              
                 </select>
+                <p class="error-form" ng-show="vm.editForm.language.$touched && vm.editForm.language.$error.required">Language need to be selected.</p>
             </div>
         </div>
         <div class="form-group row">
@@ -73,7 +83,8 @@
             </div>
             <div class="col-xs-4">        
             <!-- ng-readonly="true" -->
-                <input  class="form-control" type="text" ng-model="vm.ebook.fileName"> 
+                <input  class="form-control" name="fileName" id="fileName" type="text" ng-model="vm.ebook.fileName" required="">
+                <p class="error-form" ng-show="vm.editForm.fileName.$touched && vm.editForm.fileName.$error.required">File name can not be empty.</p>
             </div>
         </div>
         <div class="form-group row">
@@ -91,12 +102,6 @@
             </div>
         </div>
 
-        <div ng-if="vm.hasAddError" class="row">
-    		<div class="col-xs-4">
-    			<div uib-alert ng-class="'alert-danger'" close="vm.closeAddAlert()"> {{vm.error}}</div>
-    		</div>
-    	</div>
-        
     	<button class="btn btn-success margin5-button" type="submit" >Edit</button>
     	<button class="btn btn-danger" type="button" ng-click="vm.addNewEbookCancel()">Cancle</button>
     	<br><br>

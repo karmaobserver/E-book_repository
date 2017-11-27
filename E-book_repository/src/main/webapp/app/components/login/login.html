@@ -3,6 +3,12 @@
 <h2 align="center">Login to E-book Makso repository</h2>
 
 <br><br>
+
+<div ng-show="vm.hasLoginError" class="row">
+	<div class="col-xs-4 col-xs-offset-4">
+		<div uib-alert ng-class="'alert-danger'" ng-repeat="error in vm.errors track by $index"  close="vm.closeAlert($index)"> {{error}}</div>
+	</div>
+</div>
 <form role="form"  ng-submit="vm.login()">
 	<div class="row">
 		<div class="col-xs-4 col-xs-offset-4">
@@ -18,12 +24,6 @@
 				<label>Password</label>
 				<input type="password" class="form-control" name="password" placeholder="Enter your password" ng-model="vm.password">
 			</div>
-		</div>
-	</div>
-
-	<div ng-show="vm.hasLoginError" class="row">
-		<div class="col-xs-4 col-xs-offset-4">
-			<div uib-alert ng-class="'alert-danger'" ng-repeat="error in vm.errors track by $index"  close="vm.closeAlert($index)"> {{error}}</div>
 		</div>
 	</div>
 

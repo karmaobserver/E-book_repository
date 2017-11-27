@@ -31,7 +31,7 @@
 		        <th>Category</th>
 		        <th>Language</th>
 		        <th>File name</th>
-		        <th>User added</th>
+		        <th>Added by</th>
 		        <th>Options</th>   
 		    </tr>
 		</thead>
@@ -40,20 +40,21 @@
 			    <td>{{ebook.title}}</td>  
 			    <td>{{ebook.author}}</td> 
 			    <td>{{ebook.keywords}}</td>
-			    <td>{{ebook.publicationYear}}</td>
+			    <td class="col-xs-1">{{ebook.publicationYear}}</td>
 			    <td>{{ebook.category.name}}</td>
 			    <td>{{ebook.language.name}}</td>		  
 			    <td>{{ebook.fileName}}</td>		
 			    <td>{{ebook.users.username}}</td>
-			    <td class="td-buttons" align="center">
-			    	<button ng-if="vm.currentUser.userType === 'administrator' || (vm.currentUser.userType === 'subscriber' && !vm.currentUser.category) || (vm.currentUser.userType === 'subscriber' && vm.currentUser.category.name === ebook.category.name)" class="btn btn-success" type="button" ng-click="vm.downloadEbook(ebook.fileName)">Download</button>
-			    	<button ng-if="vm.currentUser.userType === 'administrator'" type="button" class="btn btn-warning margin5-button" ng-click="vm.editEbook(ebook.id)">Edit</button>
+			    <td class="col-xs-2" align="center">
+			    	<button ng-if="vm.currentUser.userType === 'administrator' || (vm.currentUser.userType === 'subscriber' && vm.currentUser.userCategory === NULL) || (vm.currentUser.userType === 'subscriber' && vm.currentUser.userCategory === ebook.category.name)" class="btn btn-success margin5-bottom-button" type="button" ng-click="vm.downloadEbook(ebook.fileName)">Download</button>		    	
+			    	<button ng-if="vm.currentUser.userType === 'administrator'" type="button" class="btn btn-warning margin5-bottom-button" ng-click="vm.editEbook(ebook.id)">Edit</button>
 			    	<button ng-if="vm.currentUser.userType === 'administrator'" type="button" class="btn btn-danger" ng-click="vm.deleteEbook(ebook.id)">Remove</button>
 			    	<button ng-if="vm.currentUser.username == NULL" type="button" class="btn btn-warning margin5-button" ng-click="vm.register()">Register To Download</button>			    	
 			    </td>
 			</tr>
 		</tbody>
 	</table>
+
 </div>
 <div ng-show="vm.hasEditError" class="row">
 	<div class="col-xs-4">

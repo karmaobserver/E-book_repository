@@ -53,12 +53,9 @@
 			console.log("OLD USERNAME: " + usernameOld)
 
 			var user = {};
-			if (vm.username === usernameOld) {
-				console.log("SAME USERNAME");
-				user = {firstName: vm.userFirstName, lastName: vm.userLastName, userId: userId, categoryId: vm.categorySelected, password: vm.userPassword, userType: vm.userTypeSelected, username: "sameUsername"};
-			} else {
-		   		user = {firstName: vm.userFirstName, lastName: vm.userLastName, userId: userId, categoryId: vm.categorySelected, password: vm.userPassword, userType: vm.userTypeSelected, username: vm.username};
-			}
+	
+			user = {firstName: vm.userFirstName, lastName: vm.userLastName, userId: userId, categoryId: vm.categorySelected, password: vm.userPassword, userType: vm.userTypeSelected, username: vm.username};
+
 			UserService.modiflyUserByAdmin(user)
 						.then(function(response) {
 							console.log('Modificated user');

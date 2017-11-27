@@ -69,8 +69,11 @@ public class InformationRetriever {
 		for (Document doc : docs) {
 			data = new Ebook();
 			String[] allKeywords = doc.getValues("keyword");
+			System.out.println("GETALL proba: " + doc.get("keyword"));
+			System.out.println("GETALL: " + allKeywords.length);
 			temp = "";
 			for (String keyword : allKeywords) {
+				System.out.println("GETALL: " + keyword);
 				temp += keyword + " ";
 			}
 			if (!temp.equals("")) {
@@ -79,6 +82,7 @@ public class InformationRetriever {
 			data.setKeywords(temp);
 
 			data.setTitle(doc.get("title"));
+			System.out.println("Author" + doc.get("title"));
 			data.setAuthor(doc.get("author"));
 			data.setPublicationYear(Integer.valueOf(doc.get("publicationYear")));
 			//System.out.println("Filename getDATA: " + doc.get("fileName"));
@@ -151,7 +155,6 @@ public class InformationRetriever {
 							File docFile = new File(doc.get("location"));
 							String value = UDDIndexer.getHandler(docFile).getDocument(docFile).get(rh.getFieldName());
 							String tempHL = hl.getBestFragment(analyzer, rh.getFieldName(), value);
-							//tempHL = tempHL.replace("B>", "b>");
 							if (tempHL != null) {
 								temp += rh.getFieldName() + ": " + tempHL.trim() + " ... ";
 							}
